@@ -17,8 +17,8 @@ ModelPiece::ModelPiece(OpenGLProgram* program) {
 
 	this->attribute_coord3d = program->GetAttributeCoord3d();
 	this->attribute_colour = program->GetAttributeColour();
-	this->attribute_normal =  program->GetAttributeNormal();
-	this->uniform_model =  program->GetUniformModel();
+	this->attribute_normal = program->GetAttributeNormal();
+	this->uniform_model = program->GetUniformModel();
 
 	logger->info("Initialised model piece.");
 
@@ -97,7 +97,11 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 				if (v == 0)
 					continue;
 
-				float f_bl[3] = { (float) (c * sideLength), (float) (-(r + 1) * sideLength), d * sideLength };
+				int col = v->GetLocation().col;
+				int row = v->GetLocation().row;
+				int dep = v->GetLocation().dep;
+
+				float f_bl[3] = { (float) (col * sideLength), (float) (-(row + 1) * sideLength), (float) (dep * sideLength) };
 				float f_br[3] = { f_bl[0] + sideLength, f_bl[1], f_bl[2] };
 				float f_tl[3] = { f_bl[0], f_bl[1] + sideLength, f_bl[2] };
 				float f_tr[3] = { f_br[0], f_tl[1], f_bl[2] };
@@ -108,44 +112,40 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 
 				//front
 				VoxelColour colour = v->GetColour();
-				PushIntoVector(cs, f_bl, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { colour.red, colour.green, colour.blue,
-						colour.alpha });
-				PushIntoVector(cs, f_br, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { colour.red, colour.green, colour.blue,
-						colour.alpha });
-				PushIntoVector(cs, f_tr, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { colour.red, colour.green, colour.blue,
-						colour.alpha });
-				PushIntoVector(cs, f_tl, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { colour.red, colour.green, colour.blue,
-						colour.alpha });
+				PushIntoVector(cs, f_bl, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 0.0, 0.0, 1.0 });
+				PushIntoVector(cs, f_br, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 0.0, 0.0, 1.0 });
+				PushIntoVector(cs, f_tr, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 0.0, 0.0, 1.0 });
+				PushIntoVector(cs, f_tl, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 0.0, 0.0, 1.0 });
 
 				//top
-				PushIntoVector(cs, f_tl, new float[3] { 0.0, 1.0, 0.0 }, new float[4] { 0.1, 0.8, 0.0, 1.0 });
-				PushIntoVector(cs, f_tr, new float[3] { 0.0, 1.0, 0.0 }, new float[4] { 0.1, 0.8, 0.0, 1.0 });
-				PushIntoVector(cs, b_tr, new float[3] { 0.0, 1.0, 0.0 }, new float[4] { 0.1, 0.8, 0.0, 1.0 });
-				PushIntoVector(cs, b_tl, new float[3] { 0.0, 1.0, 0.0 }, new float[4] { 0.1, 0.8, 0.0, 1.0 });
+				PushIntoVector(cs, f_tl, new float[3] { 0.0, 1.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, f_tr, new float[3] { 0.0, 1.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, b_tr, new float[3] { 0.0, 1.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, b_tl, new float[3] { 0.0, 1.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
 
 				//back
-				PushIntoVector(cs, b_br, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0, 0.0, 0.0, 1.0 });
-				PushIntoVector(cs, b_bl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0, 0.0, 0.0, 1.0 });
-				PushIntoVector(cs, b_tl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0, 0.0, 0.0, 1.0 });
-				PushIntoVector(cs, b_tr, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0, 0.0, 0.0, 1.0 });
+				PushIntoVector(cs, b_br, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 0.0, 1.0, 0.0, 1.0 });
+				PushIntoVector(cs, b_bl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 0.0, 1.0, 0.0, 1.0 });
+				PushIntoVector(cs, b_tl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 0.0, 1.0, 0.0, 1.0 });
+				PushIntoVector(cs, b_tr, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 0.0, 1.0, 0.0, 1.0 });
 
 				//bottom
-				PushIntoVector(cs, b_bl, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.0, 0.5, 0.5, 1.0 });
-				PushIntoVector(cs, b_br, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.0, 0.5, 0.5, 1.0 });
-				PushIntoVector(cs, f_br, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.0, 0.5, 0.5, 1.0 });
-				PushIntoVector(cs, f_bl, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.0, 0.5, 0.5, 1.0 });
+				PushIntoVector(cs, b_bl, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, b_br, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, f_br, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, f_bl, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
 
 				//left
-				PushIntoVector(cs, b_bl, new float[3] { -1.0, 0.0, 0.0 }, new float[4] { 0.5, 0.5, 0.0, 1.0 });
-				PushIntoVector(cs, f_bl, new float[3] { -1.0, 0.0, 0.0 }, new float[4] { 0.5, 0.5, 0.0, 1.0 });
-				PushIntoVector(cs, f_tl, new float[3] { -1.0, 0.0, 0.0 }, new float[4] { 0.5, 0.5, 0.0, 1.0 });
-				PushIntoVector(cs, b_tl, new float[3] { -1.0, 0.0, 0.0 }, new float[4] { 0.5, 0.5, 0.0, 1.0 });
+				PushIntoVector(cs, b_bl, new float[3] { -1.0, 0.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, f_bl, new float[3] { -1.0, 0.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, f_tl, new float[3] { -1.0, 0.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, b_tl, new float[3] { -1.0, 0.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
 
 				//right
-				PushIntoVector(cs, f_br, new float[3] { 1.0, 0.0, 0.0 }, new float[4] { 1.0, 0.2, 0.4, 1.0 });
-				PushIntoVector(cs, b_br, new float[3] { 1.0, 0.0, 0.0 }, new float[4] { 1.0, 0.2, 0.4, 1.0 });
-				PushIntoVector(cs, b_tr, new float[3] { 1.0, 0.0, 0.0 }, new float[4] { 1.0, 0.2, 0.4, 1.0 });
-				PushIntoVector(cs, f_tr, new float[3] { 1.0, 0.0, 0.0 }, new float[4] { 1.0, 0.2, 0.4, 1.0 });
+				PushIntoVector(cs, f_br, new float[3] { 1.0, 0.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, b_br, new float[3] { 1.0, 0.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, b_tr, new float[3] { 1.0, 0.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
+				PushIntoVector(cs, f_tr, new float[3] { 1.0, 0.0, 0.0 }, new float[4] { 0.0, 0.0, 0.0, 0.0 });
 
 				MakeElements(el, numElements, cubeNum);
 

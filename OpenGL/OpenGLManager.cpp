@@ -28,8 +28,7 @@ OpenGLManager::~OpenGLManager() {
 	window = 0;
 }
 
-void OpenGLManager::Shutdown()
-{
+void OpenGLManager::Shutdown() {
 	logger->info("Open GL manager shutdown requested.");
 	glfwSetWindowShouldClose(window, 1);
 }
@@ -56,6 +55,7 @@ void OpenGLManager::Init(OpenGLManager* manager) {
 	glewInit();
 
 	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glDebugMessageCallbackARB(gl_debug_callback, this);

@@ -25,7 +25,7 @@ namespace Tetris3D {
 struct VertexStructure {
 	float coord3d[3];
 	float normal[3];
-	float colour[4];
+	float colour[3];
 };
 
 class ModelPiece {
