@@ -5,7 +5,16 @@
  *      Author: bert
  */
 
+#include "Application.h"
+
 int main() {
+
+	Tetris3D::Application* app = new Tetris3D::Application();
+
+	app->Run();
+
+	delete app;
+
 	return 0;
 }
 
