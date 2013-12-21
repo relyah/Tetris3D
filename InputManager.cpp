@@ -14,13 +14,18 @@ namespace Tetris3D {
 InputManager::InputManager() {
 	opengl = 0;
 	isEscapePressed = false;
+
+	logger = Logger::GetLogger();
 }
 
 InputManager::~InputManager() {
-opengl = 0;
+	logger->info("Input manager shutting down.");
+	opengl = 0;
+	logger = 0;
 }
 
-void InputManager::Init(InputManager* manager, OpenGLManager* opengl ) {
+void InputManager::Init(InputManager* manager, OpenGLManager* opengl) {
+	logger->info("Initialising input manager.");
 	InputManager::manager = manager;
 
 	this->opengl = opengl;
@@ -29,10 +34,11 @@ void InputManager::Init(InputManager* manager, OpenGLManager* opengl ) {
 	glfwSetMouseButtonCallback(opengl->GetWindow(), glfw_onMouseButton);
 	glfwSetCursorPosCallback(opengl->GetWindow(), glfw_onMouseMove);
 	glfwSetScrollCallback(opengl->GetWindow(), glfw_onMouseWheel);
+
+	logger->info("Initialised input manager.");
 }
 
-void InputManager::PollEvents()
-{
+void InputManager::PollEvents() {
 	glfwPollEvents();
 }
 
@@ -44,6 +50,10 @@ bool InputManager::IsEscapePressed() {
 
 void InputManager::onKey(int key, int action, int mods) {
 
+	std::stringstream sstm;
+	sstm << "Key: " << key << " Action:" << action;
+
+	logger->debug(sstm.str());
 	isEscapePressed = key == GLFW_KEY_ESCAPE && action == GLFW_PRESS;
 }
 

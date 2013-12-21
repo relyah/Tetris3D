@@ -14,7 +14,9 @@
 
 #include "Logger.h"
 #include "InputManager.h"
-#include "OpenGLManager.h"
+#include "./OpenGL/OpenGLManager.h"
+#include "./Graphics/GraphicsEngine.h"
+#include "./Tetris/TetrisEngine.h"
 
 using namespace std;
 
@@ -33,7 +35,8 @@ private:
 	log4cpp::Category* logger;
 
 	InputManager* input;
-	OpenGLManager* opengl;
+	TetrisEngine* tetrisEngine;
+	GraphicsEngine* graphicsEngine;
 
 };
 

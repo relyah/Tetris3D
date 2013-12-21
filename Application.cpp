@@ -16,9 +16,9 @@ Application::Application() {
 
 	logger->info("Starting Tetris3D.");
 
-	input=0;
-	opengl=0;
-
+	input = 0;
+	tetrisEngine = 0;
+	graphicsEngine = 0;
 
 }
 
@@ -26,7 +26,11 @@ Application::~Application() {
 	logger->info("Shuting down Tetris3D.");
 
 	delete input;
-	delete opengl;
+	input = 0;
+	delete tetrisEngine;
+	tetrisEngine = 0;
+	delete graphicsEngine;
+	graphicsEngine = 0;
 
 	logger->info("Tetris3D End.");
 	logger = 0;
@@ -35,11 +39,14 @@ Application::~Application() {
 void Application::Init() {
 	logger->info("Initialising Tetris3D.");
 
-	opengl = new OpenGLManager();
-	opengl->Init(opengl);
+	tetrisEngine = new TetrisEngine();
+
+	graphicsEngine = new GraphicsEngine(tetrisEngine);
 
 	input = new InputManager();
-	input->Init(input, opengl);
+	input->Init(input, graphicsEngine->GetManager());
+
+	logger->info("Initialised Tetris3D.");
 
 }
 
@@ -50,16 +57,14 @@ void Application::Run() {
 
 	while (isRunning) {
 
-		opengl->BeginScene(1.0, 1.0, 1.0, 1.0);
-		opengl->EndScene();
-
 		input->PollEvents();
 		isRunning = !input->IsEscapePressed();
 		if (!isRunning) {
-			opengl->Shutdown();
+			graphicsEngine->Shutdown();
 		}
 	}
 
+	logger->info("Tetris3D stopped running.");
 }
 
 } /* namespace Tetris3D */

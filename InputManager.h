@@ -12,7 +12,7 @@
 #include <GLFW/glfw3.h> // GLFW helper library
 
 #include "Logger.h"
-#include "OpenGLManager.h"
+#include "./OpenGL/OpenGLManager.h"
 
 namespace Tetris3D {
 
@@ -30,6 +30,7 @@ public:
 private:
 	OpenGLManager* opengl;
 	bool isEscapePressed;
+	log4cpp::Category* logger;
 
 	void onKey(int key, int action, int mods);
 	void onMouseButton(int button, int action, int mods);

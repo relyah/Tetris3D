@@ -18,13 +18,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>	// TODO Auto-generated destructor stub
 
-#include "Logger.h"
+#include "../Logger.h"
 
 namespace Tetris3D {
 
 class OpenGLManager {
 public:
-	OpenGLManager();
+	OpenGLManager(int screenWidth, int screenHeight);
 	virtual ~OpenGLManager();
 
 	void Init(OpenGLManager* manager);
@@ -56,8 +56,8 @@ private:
 
 	static Tetris3D::OpenGLManager* manager;
 	GLFWwindow* window;
-	int screenWidth = 640;
-	int screenHeight = 480;
+	int screenWidth;
+	int screenHeight;
 	log4cpp::Category* logger;
 };
 

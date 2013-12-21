@@ -11,20 +11,26 @@ Tetris3D::OpenGLManager* Tetris3D::OpenGLManager::manager = 0;
 
 namespace Tetris3D {
 
-OpenGLManager::OpenGLManager() {
+OpenGLManager::OpenGLManager(int screenWidth, int screenHeight) {
 
 	logger = Logger::GetLogger();
 	window = 0;
+	this->screenHeight = screenHeight;
+	this->screenWidth = screenWidth;
 }
 
 OpenGLManager::~OpenGLManager() {
-	logger->info("Closing down OpenGL.");
+	logger->info("Stopping down OpenGL.");
 	glfwDestroyWindow(window);
 	glfwTerminate();
+	logger->info("Stopped OpenGL.");
+	logger = 0;
+	window = 0;
 }
 
 void OpenGLManager::Shutdown()
 {
+	logger->info("Open GL manager shutdown requested.");
 	glfwSetWindowShouldClose(window, 1);
 }
 
@@ -62,7 +68,7 @@ void OpenGLManager::Init(OpenGLManager* manager) {
 	GL_DONT_CARE,
 	GL_DONT_CARE, 0, &unusedIds, true);
 
-	logger->info("OpenGL initialisation completed.");
+	logger->info("Initialised OpenGL.");
 
 }
 
