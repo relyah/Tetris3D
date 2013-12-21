@@ -33,7 +33,7 @@ public:
 	ModelPiece(OpenGLProgram* program);
 	virtual ~ModelPiece();
 
-	void Render();
+	void Render(bool isGenerateBuffers=true);
 
 	AbstractPiece& GetPiece() {
 		return *piece;

@@ -26,16 +26,25 @@ public:
 	void PollEvents();
 
 	bool IsEscapePressed();
+	bool IsLeftPressed();
+	bool IsRightPressed();
+	bool IsUpPressed();
+	bool IsDownPressed();
 
 private:
 	OpenGLManager* opengl;
 	bool isEscapePressed;
+	bool isLeftPressed;
+	bool isRightPressed;
+	bool isUpPressed;
+	bool isDownPressed;
 	log4cpp::Category* logger;
 
 	void onKey(int key, int action, int mods);
 	void onMouseButton(int button, int action, int mods);
 	void onMouseMove(double x, double y);
 	void onMouseWheel(double xoffset, double yoffset);
+	bool ToggleKey(bool& flag);
 
 	static void glfw_onKey(GLFWwindow *window, int key, int scancode, int action, int mods) {
 		manager->onKey(key, action, mods);

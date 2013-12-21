@@ -30,9 +30,7 @@ void Model::Render() {
 	currentPiece->SetPiece(tetrisEngine->GetCurrentPiece());
 	currentPiece->Render();
 
-	if (tetrisEngine->IsWellChanged()) {
-		well->Render();
-	}
+		well->Render(tetrisEngine->IsWellChanged());
 }
 
 } /* namespace Tetris3D */

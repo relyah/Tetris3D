@@ -11,6 +11,7 @@
 #include <time.h>
 
 #include "../Logger.h"
+#include "../InputManager.h"
 #include "Piece.h"
 #include "Well.h"
 
@@ -18,7 +19,7 @@ namespace Tetris3D {
 
 class TetrisEngine {
 public:
-	TetrisEngine();
+	TetrisEngine(InputManager* inputManager);
 	virtual ~TetrisEngine();
 
 	void Run();
@@ -32,7 +33,7 @@ public:
 	}
 
 	bool IsCurrentPieceMoved() const {
-		return isNeedToMove;
+		return currentPiece->IsChanged();
 	}
 
 	bool IsWellChanged() {
@@ -43,6 +44,7 @@ public:
 
 private:
 	log4cpp::Category* logger;
+	InputManager* inputManager;
 	Piece* currentPiece;
 	Well* well;
 	time_t timer;
@@ -54,6 +56,7 @@ private:
 	bool isGameOver;
 
 	void PickPiece();
+	bool IsNeedToMove();
 
 };
 

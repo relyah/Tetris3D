@@ -32,9 +32,11 @@ ModelPiece::~ModelPiece() {
 	glDeleteBuffers(1, &ibo);
 }
 
-void ModelPiece::Render() {
+void ModelPiece::Render(bool isGenerateBuffers) {
 
-	GenerateBuffers();
+	if (isGenerateBuffers) {
+		GenerateBuffers();
+	}
 
 	if (isWireFrame) {
 		// Turn on wireframe mode
@@ -85,7 +87,7 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 	el.clear();
 
 	unsigned int col = piece->GetCol();
-	unsigned 	int row = piece->GetRow();
+	unsigned int row = piece->GetRow();
 	unsigned int dep = piece->GetDep();
 
 	int numElements = 24;
@@ -103,7 +105,8 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 				int row = v->GetLocation().row;
 				int dep = v->GetLocation().dep;
 
-				float f_bl[3] = { (float) (col * sideLength-10.0), (float) (-(row + 1) * sideLength+14.0), (float) (dep * sideLength) };
+				float f_bl[3] = { (float) (col * sideLength - 10.0), (float) (-(row + 1) * sideLength + 14.0), (float) (dep
+						* sideLength) };
 				float f_br[3] = { f_bl[0] + sideLength, f_bl[1], f_bl[2] };
 				float f_tl[3] = { f_bl[0], f_bl[1] + sideLength, f_bl[2] };
 				float f_tr[3] = { f_br[0], f_tl[1], f_bl[2] };

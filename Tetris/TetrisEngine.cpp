@@ -9,12 +9,13 @@
 
 namespace Tetris3D {
 
-TetrisEngine::TetrisEngine() {
+TetrisEngine::TetrisEngine(InputManager* inputManager) {
 
 	logger = Logger::GetLogger();
 
 	logger->info("Initialised Tetris engine.");
 
+	this->inputManager = inputManager;
 	isGameOver = false;
 	isCanStartMoveDelay = true;
 	moveDelay = 0.0;
@@ -38,9 +39,9 @@ TetrisEngine::TetrisEngine() {
 TetrisEngine::~TetrisEngine() {
 	logger->info("Stopping Tetris engine.");
 	delete currentPiece;
-	currentPiece=0;
+	currentPiece = 0;
 	delete well;
-	well=0;
+	well = 0;
 	logger->info("Stopped Tetris engine.");
 }
 
@@ -49,25 +50,27 @@ void TetrisEngine::Run() {
 	if (isGameOver)
 		return;
 
-	time_t now;
-
-	time(&now);
-
-	double seconds = 0.0;
-	seconds = difftime(now, timer);
-
-	isNeedToMove = seconds >= 2.0;
-
-	if (!isCanStartMoveDelay) {
-		moveDelay += seconds;
+	bool isKeyPressed = false;
+	int incDep = 0;
+	int incCol = 0;
+	if (inputManager->IsDownPressed()) {
+		isKeyPressed = true;
+		incDep = -1;
+	} else if (inputManager->IsUpPressed()) {
+		isKeyPressed = true;
+		incDep = 1;
+	} else if (inputManager->IsLeftPressed()) {
+		isKeyPressed = true;
+		incCol = -1;
+	} else if (inputManager->IsRightPressed()) {
+		isKeyPressed = true;
+		incCol = 1;
 	}
-
-	if (isNeedToMove) {
-		std::ostringstream strs;
-		strs << "Need to move. Elapsed time:" << seconds << "(sec)";
-
-		logger->debug(strs.str());
-
+	if (isKeyPressed && well->CanMove(currentPiece, incCol, 0, incDep)) {
+		logger->debug("Piece moved by user.");
+		currentPiece->Move(incCol, 0, incDep);
+	}
+	if (IsNeedToMove()) {
 		if (isCanStartMoveDelay && well->CanMove(currentPiece, 0, 1, 0)) {
 			logger->debug("Piece moved.");
 
@@ -97,9 +100,32 @@ void TetrisEngine::Run() {
 			}
 		}
 
-		timer = now;
-
 	}
+}
+
+bool TetrisEngine::IsNeedToMove() {
+	time_t now;
+
+	time(&now);
+
+	double seconds = 0.0;
+	seconds = difftime(now, timer);
+
+	isNeedToMove = seconds >= 2.0;
+
+	if (!isCanStartMoveDelay) {
+		moveDelay += seconds;
+	}
+
+	if (isNeedToMove) {
+		std::ostringstream strs;
+		strs << "Need to move. Elapsed time:" << seconds << "(sec)";
+		logger->debug(strs.str());
+
+		timer = now;
+	}
+
+	return isNeedToMove;
 }
 
 void TetrisEngine::PickPiece() {

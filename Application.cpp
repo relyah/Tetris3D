@@ -39,11 +39,12 @@ Application::~Application() {
 void Application::Init() {
 	logger->info("Initialising Tetris3D.");
 
-	tetrisEngine = new TetrisEngine();
+	input = new InputManager();
+
+	tetrisEngine = new TetrisEngine(input);
 
 	graphicsEngine = new GraphicsEngine(tetrisEngine);
 
-	input = new InputManager();
 	input->Init(input, graphicsEngine->GetManager());
 
 	logger->info("Initialised Tetris3D.");
