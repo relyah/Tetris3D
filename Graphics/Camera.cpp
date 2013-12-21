@@ -12,6 +12,7 @@ namespace Tetris3D {
 Camera::Camera(OpenGLProgram* program) {
 	logger = Logger::GetLogger();
 	logger->info("Initialising Camera.");
+	this->program = program;
 	Init();
 	logger->info("Initialised Camera.");
 }

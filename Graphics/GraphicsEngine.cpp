@@ -54,7 +54,9 @@ void GraphicsEngine::Init() {
 }
 
 void GraphicsEngine::Render() {
-	manager->BeginScene(1.0, 1.0, 1.0, 1.0);
+	manager->BeginScene(0.1, 0.1, 0.1, 1.0);
+
+	program->Render();
 
 	glm::mat4 projection = glm::perspective(45.0f, 1.0f * screenWidth / screenHeight, 0.1f, 100.0f);
 	glUniformMatrix4fv(program->GetUniformProjection(), 1, GL_FALSE, glm::value_ptr(projection));

@@ -85,6 +85,9 @@ void OpenGLManager::OnWindowResize(GLFWwindow* window, int width, int height) {
 	screenWidth = width;
 	screenHeight = height;
 	glViewport(0, 0, screenWidth, screenHeight);
+	std::stringstream sstm;
+	sstm << "Window Resize: Width: " << width << " Height:" << height;
+	logger->info(sstm.str());
 }
 
 void OpenGLManager::OnError(int error, const char* description) {

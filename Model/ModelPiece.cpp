@@ -33,6 +33,9 @@ ModelPiece::~ModelPiece() {
 }
 
 void ModelPiece::Render() {
+
+	GenerateBuffers();
+
 	if (isWireFrame) {
 		// Turn on wireframe mode
 		glPolygonMode(GL_FRONT, GL_LINE);
@@ -81,7 +84,7 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 	cs.clear();
 	el.clear();
 
-	int size = 1; // piece->GetSize();
+	int size = piece->GetSize();
 
 	int numElements = 24;
 	int cubeNum = 0;

@@ -57,6 +57,9 @@ void Application::Run() {
 
 	while (isRunning) {
 
+		tetrisEngine->Run();
+		graphicsEngine->Render();
+
 		input->PollEvents();
 		isRunning = !input->IsEscapePressed();
 		if (!isRunning) {
