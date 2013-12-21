@@ -84,15 +84,17 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 	cs.clear();
 	el.clear();
 
-	int size = piece->GetSize();
+	unsigned int col = piece->GetCol();
+	unsigned 	int row = piece->GetRow();
+	unsigned int dep = piece->GetDep();
 
 	int numElements = 24;
 	int cubeNum = 0;
 
-	for (int c = 0; c < size; c++) {
+	for (unsigned int c = 0; c < col; c++) {
 
-		for (int r = 0; r < size; r++) {
-			for (int d = 0; d < size; d++) {
+		for (unsigned int r = 0; r < row; r++) {
+			for (unsigned int d = 0; d < dep; d++) {
 				Voxel* v = (*piece)(c, r, d);
 				if (v == 0)
 					continue;
@@ -101,7 +103,7 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 				int row = v->GetLocation().row;
 				int dep = v->GetLocation().dep;
 
-				float f_bl[3] = { (float) (col * sideLength), (float) (-(row + 1) * sideLength), (float) (dep * sideLength) };
+				float f_bl[3] = { (float) (col * sideLength-10.0), (float) (-(row + 1) * sideLength+14.0), (float) (dep * sideLength) };
 				float f_br[3] = { f_bl[0] + sideLength, f_bl[1], f_bl[2] };
 				float f_tl[3] = { f_bl[0], f_bl[1] + sideLength, f_bl[2] };
 				float f_tr[3] = { f_br[0], f_tl[1], f_bl[2] };

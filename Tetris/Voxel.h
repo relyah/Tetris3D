@@ -17,6 +17,8 @@ public:
 	Voxel();
 	virtual ~Voxel();
 
+	void Move(int incCol, int incRow, int incDep);
+
 	VoxelColour& GetColour() {
 		return colour;
 	}

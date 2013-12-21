@@ -18,4 +18,10 @@ Voxel::~Voxel() {
 	// TODO Auto-generated destructor stub
 }
 
+void Voxel::Move(int incCol, int incRow, int incDep) {
+	location.col += incCol;
+	location.row += incRow;
+	location.dep += incDep;
+}
+
 } /* namespace Tetris3D */

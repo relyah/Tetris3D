@@ -12,7 +12,7 @@
 #include "../OpenGL/OpenGLManager.h"
 #include "../OpenGL/OpenGLProgram.h"
 #include "Camera.h"
-#include "../Model/ModelPiece.h"
+#include "../Model/Model.h"
 #include "../Tetris/TetrisEngine.h"
 
 namespace Tetris3D {
@@ -38,7 +38,7 @@ private:
 	TetrisEngine* tetrisEngine;
 	OpenGLManager* manager;
 	OpenGLProgram* program;
-	ModelPiece* piece;
+	Model* model;
 	Camera* camera;
 
 	void Init();

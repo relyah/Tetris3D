@@ -35,11 +35,11 @@ public:
 
 	void Render();
 
-	Piece& GetPiece() {
+	AbstractPiece& GetPiece() {
 		return *piece;
 	}
 
-	void SetPiece(Piece* piece) {
+	void SetPiece(AbstractPiece* piece) {
 		this->piece = piece;
 	}
 
@@ -47,9 +47,14 @@ public:
 		this->isWireFrame = isWireFrame;
 	}
 
+	bool IsNeedToRedraw()
+	{
+		return piece->IsChanged();
+	}
+
 private:
 	OpenGLProgram* program;
-	Piece* piece;
+	AbstractPiece* piece;
 	float sideLength;
 	bool isWireFrame;
 	glm::mat4 translate;

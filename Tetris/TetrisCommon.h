@@ -18,13 +18,23 @@ struct VoxelColour {
 	float alpha;
 
 public:
-	float* AsFV() {return new float[4] {red,green,blue,alpha};}
+	float* AsFV() {
+		return new float[4] { red, green, blue, alpha };
+	}
 };
 
 struct VoxelLocation {
 	unsigned int col;
 	unsigned int row;
 	unsigned int dep;
+
+	VoxelLocation Move(int incCol, int incRow, int incDep) {
+		VoxelLocation v;
+		v.col = this->col + incCol;
+		v.row = this->row + incRow;
+		v.dep = this->dep + incDep;
+		return v;
+	}
 };
 
 struct VoxelDrawPosition {

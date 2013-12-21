@@ -22,8 +22,8 @@ GraphicsEngine::GraphicsEngine(TetrisEngine* tetrisEngine) {
 GraphicsEngine::~GraphicsEngine() {
 	logger->info("Stopping Graphics engine.");
 
-	delete piece;
-	piece = 0;
+	delete model;
+	model = 0;
 	delete camera;
 	camera = 0;
 	delete program;
@@ -47,26 +47,27 @@ void GraphicsEngine::Init() {
 
 	camera = new Camera(program);
 
-	piece = new ModelPiece(program);
+	model = new Model(program, tetrisEngine);
 
 	logger->info("Initialised Graphics engine.");
 
 }
 
 void GraphicsEngine::Render() {
-	manager->BeginScene(0.1, 0.1, 0.1, 1.0);
+	if (model->IsNeedToRender()) {
+		manager->BeginScene(0.1, 0.1, 0.1, 1.0);
 
-	program->Render();
+		program->Render();
 
-	glm::mat4 projection = glm::perspective(45.0f, 1.0f * screenWidth / screenHeight, 0.1f, 100.0f);
-	glUniformMatrix4fv(program->GetUniformProjection(), 1, GL_FALSE, glm::value_ptr(projection));
+		glm::mat4 projection = glm::perspective(45.0f, 1.0f * screenWidth / screenHeight, 0.1f, 100.0f);
+		glUniformMatrix4fv(program->GetUniformProjection(), 1, GL_FALSE, glm::value_ptr(projection));
 
-	camera->Render();
+		camera->Render();
 
-	piece->SetPiece(tetrisEngine->GetCurrentPiece());
-	piece->Render();
+		model->Render();
 
-	manager->EndScene();
+		manager->EndScene();
+	}
 }
 
 void GraphicsEngine::Shutdown() {
