@@ -11,6 +11,7 @@ int main() {
 
 	Tetris3D::Application* app = new Tetris3D::Application();
 
+	app->Init();
 	app->Run();
 
 	delete app;

@@ -12,6 +12,10 @@
 #include <log4cpp/Category.hh>
 #include <log4cpp/PropertyConfigurator.hh>
 
+#include "Logger.h"
+#include "InputManager.h"
+#include "OpenGLManager.h"
+
 using namespace std;
 
 namespace Tetris3D {
@@ -21,12 +25,16 @@ public:
 	Application();
 	virtual ~Application();
 
+	void Init();
 	void Run();
 
 private:
-	void Init();
 
-	log4cpp::Category* root;
+	log4cpp::Category* logger;
+
+	InputManager* input;
+	OpenGLManager* opengl;
+
 };
 
 } /* namespace Tetris3D */
