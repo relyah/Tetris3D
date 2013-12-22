@@ -64,6 +64,70 @@ void Piece::RotateZCCW() {
 		}
 	}
 }
+
+void Piece::RotateYCCW() {
+	isMoved = true;
+	unsigned int n = size;
+	unsigned int colLimit = floor((float) n / 2.0);
+	unsigned int depLimit = ceil((float) n / 2.0);
+
+	for (unsigned int r = 0; r < size; r++) {
+		for (unsigned int c = 0; c < colLimit; c++) {
+			for (unsigned int d = 0; d < depLimit; d++) {
+
+				Voxel* temp = container[c][r][d];
+				if (temp != 0) {
+					temp = temp->Copy();
+				}
+
+				//SwapVoxels(c, r, d, container[n - 1 - r][c][d]);
+				SwapVoxels(c, r, d, container[n - 1 - d][r][c]);
+
+				//SwapVoxels(n - 1 - r, c, d, container[n - 1 - c][n - 1 - r][d]);
+				SwapVoxels(n - 1 - d, r, c, container[n - 1 - c][r][n - 1 - d]);
+
+				//SwapVoxels(n - 1 - c, n - 1 - r, d, container[r][n - 1 - c][d]);
+				SwapVoxels(n - 1 - c, r, n - 1 - d, container[d][r][n - 1 - c]);
+
+				//SwapVoxels(r, n - 1 - c, d, temp);
+				SwapVoxels(d, r, n - 1 - c, temp);
+			}
+		}
+	}
+}
+
+void Piece::RotateXCCW() {
+	isMoved = true;
+	unsigned int n = size;
+	unsigned int colLimit = floor((float) n / 2.0);
+	unsigned int rowLimit = ceil((float) n / 2.0);
+
+	for (unsigned int c = 0; c < n; c++) {
+		for (unsigned int d = 0; d < colLimit; d++) {
+			for (unsigned int r = 0; r < rowLimit; r++) {
+
+				Voxel* temp = container[c][r][d];
+				if (temp != 0) {
+					temp = temp->Copy();
+				}
+
+				//SwapVoxels(c, r, d, container[n - 1 - r][c][d]);
+				SwapVoxels(c, r, d, container[c][d][n - 1 - r]);
+
+				//SwapVoxels(n - 1 - r, c, d, container[n - 1 - c][n - 1 - r][d]);
+				SwapVoxels(c, d, n - 1 - r, container[c][n - 1 - r][n - 1 - d]);
+
+				//SwapVoxels(n - 1 - c, n - 1 - r, d, container[r][n - 1 - c][d]);
+				SwapVoxels(c, n - 1 - r, n - 1 - d, container[c][n - 1 - d][r]);
+
+				//SwapVoxels(r, n - 1 - c, d, temp);
+				SwapVoxels(c, n - 1 - d, r, temp);
+
+			}
+		}
+	}
+}
+
 unsigned int Piece::GetLeftCol() {
 
 	for (unsigned int col = 0; col < size; col++) {

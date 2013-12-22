@@ -43,7 +43,10 @@ TetrisEngine::~TetrisEngine() {
 void TetrisEngine::Run() {
 
 	if (isGameOver)
+	{
+		logger->debug("Game over.");
 		return;
+	}
 
 	if (inputManager->IsPPressed())
 	{
@@ -81,6 +84,18 @@ void TetrisEngine::Run() {
 			currentPiece->RotateZCCW();
 		}
 	}
+	if (inputManager->IsSPressed()) {
+		if (well->CanRotateYCCW(currentPiece)) {
+			logger->debug("Piece rotated (Y-CCW) by user.");
+			currentPiece->RotateYCCW();
+		}
+	}
+	if (inputManager->IsDPressed()) {
+		if (well->CanRotateXCCW(currentPiece)) {
+			logger->debug("Piece rotated (X-CCW) by user.");
+			currentPiece->RotateXCCW();
+		}
+	}
 	if (inputManager->IsSpacebarPressed()) {
 		well->Drop(currentPiece);
 		isDrop = true;
@@ -111,6 +126,7 @@ void TetrisEngine::Run() {
 			if (well->CanMove(currentPiece)) {
 				isGameOver = false;
 			} else {
+				logger->debug("Game over condition detected.");
 				isGameOver = true;
 			}
 		}

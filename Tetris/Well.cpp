@@ -122,21 +122,21 @@ int Well::GetSmallestDistance(int wellRow, int pieceRowInWell, int currentDistan
 	}
 }
 
-bool Well::CanRotateZCCW(Piece* other) {
-	unsigned int size = other->GetSize();
+bool Well::CanRotateZCCW(Piece* piece) {
+	unsigned int size = piece->GetSize();
 
 	for (unsigned int d = 0; d < size; d++) {
 		for (unsigned int r = 0; r < size; r++) {
 			for (unsigned int c = 0; c < size; c++) {
-				Voxel* v = (*other)(c, r, d);
+				Voxel* v = (*piece)(c, r, d);
 				if (v == 0)
 					continue;
 
 				VoxelLocation l = v->GetLocation();
 
-				int newCol = l.row + other->GetLocation().col;
-				int newRow = size - 1 - l.col + other->GetLocation().row;
-				int newDep = l.dep + other->GetLocation().dep;
+				int newCol = l.row + piece->GetLocation().col;
+				int newRow = size - 1 - l.col + piece->GetLocation().row;
+				int newDep = l.dep + piece->GetLocation().dep;
 
 				if (!IsThereSpaceHere(newCol, newRow, newDep))
 					return false;
@@ -146,6 +146,56 @@ bool Well::CanRotateZCCW(Piece* other) {
 	}
 	return true;
 
+}
+
+bool Well::CanRotateYCCW(Piece* piece) {
+	unsigned int size = piece->GetSize();
+
+	for (unsigned int r = 0; r < size; r++) {
+		for (unsigned int c = 0; c < size; c++) {
+			for (unsigned int d = 0; d < size; d++) {
+
+				Voxel* v = (*piece)(c, r, d);
+				if (v == 0)
+					continue;
+
+				VoxelLocation l = v->GetLocation();
+
+				int newCol = l.dep + piece->GetLocation().col;
+				int newRow = l.row + piece->GetLocation().row;
+				int newDep = size - 1 - l.col + piece->GetLocation().dep;
+
+				if (!IsThereSpaceHere(newCol, newRow, newDep))
+					return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool Well::CanRotateXCCW(Piece* piece) {
+	unsigned int size = piece->GetSize();
+
+	for (unsigned int c = 0; c < size; c++) {
+		for (unsigned int r = 0; r < size; r++) {
+			for (unsigned int d = 0; d < size; d++) {
+
+				Voxel* v = (*piece)(c, r, d);
+				if (v == 0)
+					continue;
+
+				VoxelLocation l = v->GetLocation();
+
+				int newCol =l.col + piece->GetLocation().col;
+				int newRow =  size - 1 - l.dep + piece->GetLocation().row;
+				int newDep =  l.row + piece->GetLocation().dep;
+
+				if (!IsThereSpaceHere(newCol, newRow, newDep))
+					return false;
+			}
+		}
+	}
+	return true;
 }
 
 bool Well::IsThereSpaceHere(int col, int row, int dep) {

@@ -69,10 +69,6 @@ bool Camera::IsNeedToRender() {
 	isRotateX = ToggleButtonPressed(inputManager->IsXPressed(), isRotateX);
 	isRotateY = ToggleButtonPressed(inputManager->IsYPressed(), isRotateY);
 
-//	std::ostringstream strs;
-//	strs << "isRotateX:" << isRotateX << " isRotateY:" << isRotateY;
-//	logger->debug(strs.str());
-
 	if (inputManager->IsCPressed()) {
 		InitView();
 	}

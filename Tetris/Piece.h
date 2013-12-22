@@ -21,6 +21,8 @@ public:
 
 	void Move(int incCol, int incRow, int incDep);
 	void RotateZCCW();
+	void RotateYCCW();
+	void RotateXCCW();
 	unsigned int GetTopRow();
 	unsigned int GetLeftCol();
 	unsigned int GetTopDep();

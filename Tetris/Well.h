@@ -21,7 +21,9 @@ public:
 	bool CanMove(Piece* piece, int incCol = 0, int incRow = 0, int incDep = 0);
 	void Add(Piece* piece);
 	void Drop(Piece* other);
-	bool CanRotateZCCW(Piece* other);
+	bool CanRotateZCCW(Piece* piece);
+	bool CanRotateYCCW(Piece* piece);
+	bool CanRotateXCCW(Piece* piece);
 
 	bool IsAdded() {
 		bool result = isAdded;
