@@ -85,11 +85,11 @@ bool InputManager::IsPPressed() {
 bool InputManager::IsXPressed() {
 	return ToggleKey(GLFW_KEY_X);
 }
-bool InputManager::IsCPressed() {
-	return ToggleKey(GLFW_KEY_C);
-}
 bool InputManager::IsYPressed() {
 	return ToggleKey(GLFW_KEY_Y);
+}
+bool InputManager::IsCPressed() {
+	return ToggleKey(GLFW_KEY_C);
 }
 bool InputManager::IsSpacebarPressed() {
 	return ToggleKey(GLFW_KEY_SPACE);

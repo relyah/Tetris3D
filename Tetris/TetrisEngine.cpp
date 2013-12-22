@@ -23,7 +23,7 @@ TetrisEngine::TetrisEngine(InputManager* inputManager) {
 
 	time(&timer);
 
-	well = new Well(10, 14, 1);
+	well = new Well(10, 14, 4);
 	isWellChanged = true;
 
 	currentPiece = 0;
@@ -173,6 +173,32 @@ void TetrisEngine::PickPiece() {
 	v->GetColour().red = 1.0;
 	v->GetLocation().col = 1;
 	v->GetLocation().row = 0;
+	v->GetLocation().dep = 0;
+	v->GetPosition().x = 0.0;
+	v->GetPosition().y = 0.0;
+	v->GetPosition().z = 0.0;
+	currentPiece->Set(v->GetLocation().col, v->GetLocation().row, v->GetLocation().dep, v);
+
+	v = new Voxel();
+	v->GetColour().alpha = 1.0;
+	v->GetColour().blue = 1.0;
+	v->GetColour().green = 1.0;
+	v->GetColour().red = 1.0;
+	v->GetLocation().col = 0;
+	v->GetLocation().row = 1;
+	v->GetLocation().dep = 0;
+	v->GetPosition().x = 0.0;
+	v->GetPosition().y = 0.0;
+	v->GetPosition().z = 0.0;
+	currentPiece->Set(v->GetLocation().col, v->GetLocation().row, v->GetLocation().dep, v);
+
+	v = new Voxel();
+	v->GetColour().alpha = 1.0;
+	v->GetColour().blue = 1.0;
+	v->GetColour().green = 0.0;
+	v->GetColour().red = 0.2;
+	v->GetLocation().col = 1;
+	v->GetLocation().row = 1;
 	v->GetLocation().dep = 0;
 	v->GetPosition().x = 0.0;
 	v->GetPosition().y = 0.0;

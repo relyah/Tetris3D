@@ -26,7 +26,7 @@ public:
 	void Init(Camera* camera);
 	void Render();
 
-	bool IsNeedToRender() {return isNeedToRender;}
+	bool IsNeedToRender();
 private:
 	log4cpp::Category* logger;
 
@@ -49,6 +49,7 @@ private:
 	void OnMouseMove(double x, double y);
 	void InitView();
 	void GenerateView();
+	bool ToggleButtonPressed(bool isPressed, bool isChecked);
 
 	static Tetris3D::Camera* camera;
 

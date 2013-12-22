@@ -43,8 +43,7 @@ void Camera::Init(Camera* camera) {
 	logger->info("Initialised Camera.");
 }
 
-void Camera::InitView()
-{
+void Camera::InitView() {
 	cameraPosition = glm::vec3(0.0, 0.0, 40.0);  // the position of your camera, in world space
 	cameraLookAt = glm::vec3(0.0, 0.0, 0.0);  // where you want to look at, in world space
 	cameraUp = glm::vec3(0.0, 1.0, 0.0); //up direction; probably glm::vec3(0,1,0), but (0,-1,0) would make you looking upside-down, which can be great too
@@ -57,24 +56,39 @@ void Camera::GenerateView() {
 	isNeedToRender = true;
 }
 
-void Camera::Render() {
+bool Camera::ToggleButtonPressed(bool isPressed, bool isChecked) {
 
-	isRotateX = inputManager->IsXPressed() ? !isRotateX : isRotateX;
-	isRotateY = inputManager->IsYPressed() ? !isRotateY : isRotateY;
-	if (inputManager->IsCPressed()) {
-		InitView();
+	if (isPressed) {
+		return !isChecked;
 	}
+	return isChecked;
+}
+
+bool Camera::IsNeedToRender() {
+
+	isRotateX = ToggleButtonPressed(inputManager->IsXPressed(), isRotateX);
+	isRotateY = ToggleButtonPressed(inputManager->IsYPressed(), isRotateY);
 
 //	std::ostringstream strs;
 //	strs << "isRotateX:" << isRotateX << " isRotateY:" << isRotateY;
 //	logger->debug(strs.str());
 
+	if (inputManager->IsCPressed()) {
+		InitView();
+	}
+	return isNeedToRender;
+}
+
+void Camera::Render() {
 	glUniformMatrix4fv(program->GetUniformView(), 1, GL_FALSE, glm::value_ptr(view));
 }
 
 void Camera::OnMouseButton(int button, int action, int mods) {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-		logger->debug("MouseButton Left Press. Starting rotation.");
+		std::ostringstream strs;
+		strs << "MouseButton Left Press. Starting rotation. isRotateX:" << isRotateX << " isRotateY:" << isRotateY;
+		logger->debug(strs.str());
+
 		isRotate = true;
 		isGetFirstReading = true;
 	} else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
@@ -98,8 +112,7 @@ void Camera::OnMouseMove(double x, double y) {
 			return;
 		}
 		isNeedToRender = false;
-		//if (isRotateX)
-		{
+		if (isRotateX) {
 			//pitch
 			//logger->debug("RotateX");
 
