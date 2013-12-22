@@ -15,11 +15,22 @@ ModelPiece::ModelPiece(OpenGLProgram* program) :
 }
 
 ModelPiece::~ModelPiece() {
+	logger->info("Stopping model piece.");
 	piece = 0;
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glDeleteBuffers(1, &vbo);
 	glDeleteBuffers(1, &ibo);
+	logger->info("Stopped model piece.");
+}
+
+void ModelPiece::GenerateBuffers() {
+	std::vector<float> cs;
+	std::vector<unsigned short> el;
+	Convert(cs, el);
+
+	GenerateArrayBuffer(vbo, cs);
+	GenerateElementBuffer(ibo, el);
 }
 
 void ModelPiece::InitBuffers()
@@ -173,15 +184,6 @@ void ModelPiece::MakeElements(std::vector<unsigned short> &el, int numElements, 
 	el.push_back(23 + offset);
 	el.push_back(20 + offset);
 
-}
-
-void ModelPiece::GenerateBuffers() {
-	std::vector<float> cs;
-	std::vector<unsigned short> el;
-	Convert(cs, el);
-
-	GenerateArrayBuffer(vbo, cs);
-	GenerateElementBuffer(ibo, el);
 }
 
 } /* namespace Tetris3D */

@@ -12,6 +12,7 @@
 #include "../Tetris/TetrisEngine.h"
 #include "ModelPiece.h"
 #include "ModelGrid.h"
+#include "ModelShadow.h"
 
 namespace Tetris3D {
 
@@ -30,6 +31,7 @@ private:
 	ModelPiece* currentPiece;
 	ModelPiece* well;
 	ModelGrid* grid;
+	ModelShadow* shadow;
 
 	bool isGenerateGrid;
 };

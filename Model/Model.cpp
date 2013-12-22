@@ -20,6 +20,9 @@ Model::Model(OpenGLProgram* program, TetrisEngine* tetrisEngine) {
 
 	grid = new ModelGrid(program);
 	grid->SetWell(tetrisEngine->GetWell());
+
+	shadow = new ModelShadow(program);
+
 	isGenerateGrid = true;
 }
 
@@ -30,6 +33,8 @@ Model::~Model() {
 	well = 0;
 	delete grid;
 	grid = 0;
+	delete shadow;
+	shadow = 0;
 
 	tetrisEngine = 0;
 }
@@ -39,13 +44,15 @@ bool Model::IsNeedToRender() {
 }
 
 void Model::Render() {
+	grid->Render(isGenerateGrid);
+	isGenerateGrid = false;
+
 	currentPiece->SetPiece(tetrisEngine->GetCurrentPiece());
 	currentPiece->Render();
 
 	well->Render(tetrisEngine->IsWellChanged());
 
-	grid->Render(isGenerateGrid);
-	isGenerateGrid = false;
+	shadow->Render();
 }
 
 } /* namespace Tetris3D */
