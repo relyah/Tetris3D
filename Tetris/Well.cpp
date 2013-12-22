@@ -22,7 +22,7 @@ bool Well::CanMove(Piece* piece, int incCol, int incRow, int incDep) {
 	if (pieceBottomRow >= this->row - 1)
 		return false;
 
-	VoxelLocation offset = piece->GetLocation();
+	Location offset = piece->GetLocation();
 
 	int otherSize = piece->GetSize();
 	for (int r = pieceBottomRow; r >= 0; r--) {
@@ -33,8 +33,7 @@ bool Well::CanMove(Piece* piece, int incCol, int incRow, int incDep) {
 				if (!v)
 					continue;
 
-				VoxelLocation newLocation = v->GetLocation().Move(incCol + offset.col, incRow + offset.row, incDep
-						+ offset.dep);
+				Location newLocation = v->GetLocation().Move(incCol + offset.col, incRow + offset.row, incDep + offset.dep);
 				if (newLocation.col >= this->col)
 					return false;
 				if (newLocation.row >= this->row)
@@ -176,11 +175,14 @@ void Well::RemoveFullPlane() {
 //			}
 
 			//drop everything above the removed row
-			for (unsigned int dropRow = r - 1; dropRow >= 0; dropRow--) {
+			for (int dropRow = r - 1; dropRow >= 0; dropRow--) {
 				for (unsigned int c = 0; c < col; c++) {
 					for (unsigned int d = 0; d < dep; d++) {
-						container[c][dropRow + 1][d] = container[c][dropRow][d];
-						container[c][dropRow][d] = 0;
+						SwapVoxels(c, dropRow + 1, d, container[c][dropRow][d]);
+						if (container[c][dropRow][d] != 0) {
+							delete container[c][dropRow][d];
+							container[c][dropRow][d] = 0;
+						}
 					}
 				}
 			}

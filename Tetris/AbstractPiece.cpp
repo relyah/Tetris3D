@@ -10,7 +10,7 @@
 namespace Tetris3D {
 
 AbstractPiece::AbstractPiece(int col, int row, int dep) {
-	this->col = dep;
+	this->col = col;
 	this->row = row;
 	this->dep = dep;
 	location.col = 0;
@@ -117,5 +117,33 @@ int AbstractPiece::GetFirstRow() {
 	}
 	return 0;
 }
+
+void AbstractPiece::SwapVoxels(unsigned int dest_c, unsigned int dest_r, unsigned int dest_d, Voxel* src) {
+
+	Voxel* dest = container[dest_c][dest_r][dest_d];
+	if (src == 0) {
+		if (dest != 0) {
+			delete container[dest_c][dest_r][dest_d];
+		}
+		container[dest_c][dest_r][dest_d] = 0;
+		return;
+	}
+
+	if (dest == 0) {
+		Voxel* v = new Voxel();
+		v->GetLocation().col = dest_c;
+		v->GetLocation().row = dest_r;
+		v->GetLocation().dep = dest_d;
+		container[dest_c][dest_r][dest_d] = v;
+		dest = container[dest_c][dest_r][dest_d];
+	}
+
+	dest->GetColour().red = src->GetColour().red;
+	dest->GetColour().blue = src->GetColour().blue;
+	dest->GetColour().green = src->GetColour().green;
+	dest->GetColour().alpha = src->GetColour().alpha;
+
+}
+
 
 } /* namespace Tetris3D */

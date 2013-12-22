@@ -37,6 +37,8 @@ struct VoxelLocation {
 	}
 };
 
+typedef VoxelLocation Location;
+
 struct VoxelDrawPosition {
 	float x;
 	float y;

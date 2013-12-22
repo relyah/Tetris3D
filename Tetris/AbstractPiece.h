@@ -62,6 +62,7 @@ protected:
 	virtual bool Validate(unsigned int _col, unsigned int _row, unsigned int _dep) {
 		return Validate(col, _col) && Validate(row, _row) && Validate(dep, _dep);
 	}
+	void SwapVoxels(unsigned int dest_c, unsigned int dest_r, unsigned int dest_d, Voxel* src);
 
 private:
 

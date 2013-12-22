@@ -64,34 +64,6 @@ void Piece::RotateZCCW() {
 		}
 	}
 }
-
-void Piece::SwapVoxels(unsigned int c1, unsigned int r1, unsigned int d1, Voxel* src) {
-
-	Voxel* dest = container[c1][r1][d1];
-	if (src == 0) {
-		if (dest != 0) {
-			delete container[c1][r1][d1];
-		}
-		container[c1][r1][d1] = 0;
-		return;
-	}
-
-	if (dest == 0) {
-		Voxel* v = new Voxel();
-		v->GetLocation().col = c1;
-		v->GetLocation().row = r1;
-		v->GetLocation().dep = d1;
-		container[c1][r1][d1] = v;
-		dest = container[c1][r1][d1];
-	}
-
-	dest->GetColour().red = src->GetColour().red;
-	dest->GetColour().blue = src->GetColour().blue;
-	dest->GetColour().green = src->GetColour().green;
-	dest->GetColour().alpha = src->GetColour().alpha;
-
-}
-
 unsigned int Piece::GetLeftCol() {
 
 	for (unsigned int col = 0; col < size; col++) {

@@ -23,7 +23,7 @@ TetrisEngine::TetrisEngine(InputManager* inputManager) {
 
 	time(&timer);
 
-	well = new Well(10, 14, 5);
+	well = new Well(10, 14, 1);
 	isWellChanged = true;
 
 	currentPiece = 0;
