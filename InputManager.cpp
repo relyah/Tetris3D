@@ -19,6 +19,9 @@ InputManager::InputManager() {
 	isLeftPressed = false;
 	isRightPressed = false;
 
+	reg_onMouseButton = 0;
+	reg_onMouseMove = 0;
+
 	logger = Logger::GetLogger();
 
 	for (int i = 0; i < GLFW_KEY_LAST; i++) {
@@ -76,9 +79,17 @@ bool InputManager::IsSPressed() {
 bool InputManager::IsDPressed() {
 	return ToggleKey(GLFW_KEY_D);
 }
-bool InputManager::IsPPressed()
-{
+bool InputManager::IsPPressed() {
 	return ToggleKey(GLFW_KEY_P);
+}
+bool InputManager::IsXPressed() {
+	return ToggleKey(GLFW_KEY_X);
+}
+bool InputManager::IsCPressed() {
+	return ToggleKey(GLFW_KEY_C);
+}
+bool InputManager::IsYPressed() {
+	return ToggleKey(GLFW_KEY_Y);
 }
 bool InputManager::IsSpacebarPressed() {
 	return ToggleKey(GLFW_KEY_SPACE);
@@ -88,6 +99,14 @@ bool InputManager::ToggleKey(int key) {
 	bool result = pressedKeys[key];
 	pressedKeys[key] = false;
 	return result;
+}
+
+void InputManager::RegisterOnMouseButton(void (*reg_onMouseButton)(int button, int action, int mods)) {
+	this->reg_onMouseButton = reg_onMouseButton;
+}
+
+void InputManager::RegisterOnMouseMove(void (*reg_onMouseMove)(double x, double y)) {
+	this->reg_onMouseMove = reg_onMouseMove;
 }
 
 void InputManager::onKey(int key, int action, int mods) {
@@ -101,11 +120,15 @@ void InputManager::onKey(int key, int action, int mods) {
 }
 
 void InputManager::onMouseButton(int button, int action, int mods) {
-
+	if (reg_onMouseButton != 0) {
+		reg_onMouseButton(button, action, mods);
+	}
 }
 
 void InputManager::onMouseMove(double x, double y) {
-
+	if (reg_onMouseMove != 0) {
+		reg_onMouseMove(x, y);
+	}
 }
 
 void InputManager::onMouseWheel(double xoffset, double yoffset) {

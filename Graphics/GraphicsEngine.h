@@ -19,7 +19,7 @@ namespace Tetris3D {
 
 class GraphicsEngine {
 public:
-	GraphicsEngine(TetrisEngine* tetrisEngine);
+	GraphicsEngine(TetrisEngine* tetrisEngine,InputManager* inputManager);
 	virtual ~GraphicsEngine();
 
 	void Render();
@@ -36,6 +36,7 @@ private:
 	int screenHeight;
 
 	TetrisEngine* tetrisEngine;
+	InputManager* inputManager;
 	OpenGLManager* manager;
 	OpenGLProgram* program;
 	Model* model;

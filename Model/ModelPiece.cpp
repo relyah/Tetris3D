@@ -2,26 +2,16 @@
 
 namespace Tetris3D {
 
-ModelPiece::ModelPiece(OpenGLProgram* program) {
-	logger = Logger::GetLogger();
-
+ModelPiece::ModelPiece(OpenGLProgram* program) :
+		AbstractModelPiece(program) {
 	logger->info("Initialising model piece.");
 
-	sideLength = 2.0;
 	piece = 0;
 	vbo = -1;
 	ibo = -1;
 	isWireFrame = false;
 
-	this->program = program;
-
-	this->attribute_coord3d = program->GetAttributeCoord3d();
-	this->attribute_colour = program->GetAttributeColour();
-	this->attribute_normal = program->GetAttributeNormal();
-	this->uniform_model = program->GetUniformModel();
-
 	logger->info("Initialised model piece.");
-
 }
 
 ModelPiece::~ModelPiece() {
@@ -32,54 +22,69 @@ ModelPiece::~ModelPiece() {
 	glDeleteBuffers(1, &ibo);
 }
 
-void ModelPiece::Render(bool isGenerateBuffers) {
-
-	if (isGenerateBuffers) {
-		GenerateBuffers();
-	}
-
-	if (isWireFrame) {
-		// Turn on wireframe mode
-		glPolygonMode(GL_FRONT, GL_LINE);
-		glPolygonMode(GL_BACK, GL_LINE);
-	}
-
-	glEnableVertexAttribArray(attribute_coord3d);
-	glEnableVertexAttribArray(attribute_normal);
-	glEnableVertexAttribArray(attribute_colour);
-
-	translate = glm::mat4(1.0f);
-	glUniformMatrix4fv(uniform_model, 1, GL_FALSE, glm::value_ptr(translate));
-
+void ModelPiece::InitBuffers()
+{
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	glVertexAttribPointer(attribute_coord3d, 3, GL_FLOAT, GL_FALSE, sizeof(struct VertexStructure),  // stride
-	0);  // offset
-
-	glVertexAttribPointer(attribute_normal, 3,
-	GL_FLOAT,
-	GL_FALSE, sizeof(struct VertexStructure),  // stride
-	(GLvoid*) offsetof(struct VertexStructure, normal));
-
-	glVertexAttribPointer(attribute_colour, 3,
-	GL_FLOAT,
-	GL_FALSE, sizeof(struct VertexStructure),  // stride
-	(GLvoid*) offsetof(struct VertexStructure, colour));
-
-	/* Push each element in buffer_vertices to the vertex shader */
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	AbstractModelPiece::InitBuffers();
+}
+//void ModelPiece::Render(bool isGenerateBuffers) {
+//
+//	if (isGenerateBuffers) {
+//		GenerateBuffers();
+//	}
+//
+//	if (isWireFrame) {
+//		// Turn on wireframe mode
+//		glPolygonMode(GL_FRONT, GL_LINE);
+//		glPolygonMode(GL_BACK, GL_LINE);
+//	}
+//
+//	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+//
+//	//InitBuffers();
+//	glEnableVertexAttribArray(attribute_coord3d);
+//	glEnableVertexAttribArray(attribute_normal);
+//	glEnableVertexAttribArray(attribute_colour);
+//
+//	glm::mat4 translate = glm::mat4(1.0f);
+//	glUniformMatrix4fv(uniform_model, 1, GL_FALSE, glm::value_ptr(translate));
+//
+//	glVertexAttribPointer(attribute_coord3d, 3, GL_FLOAT, GL_FALSE, sizeof(struct VertexStructure),  // stride
+//	0);  // offset
+//
+//	glVertexAttribPointer(attribute_normal, 3,
+//	GL_FLOAT,
+//	GL_FALSE, sizeof(struct VertexStructure),  // stride
+//	(GLvoid*) offsetof(struct VertexStructure, normal));
+//
+//	glVertexAttribPointer(attribute_colour, 3,
+//	GL_FLOAT,
+//	GL_FALSE, sizeof(struct VertexStructure),  // stride
+//	(GLvoid*) offsetof(struct VertexStructure, colour));
+//
+//	//DrawBuffers();
+//
+//	int size = 0;
+//	glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
+//	glDrawElements(GL_TRIANGLES, size / sizeof(GLushort), GL_UNSIGNED_SHORT, 0);
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+//
+//	if (isWireFrame) {
+//		// Turn off wireframe mode
+//		glPolygonMode(GL_FRONT, GL_FILL);
+//		glPolygonMode(GL_BACK, GL_FILL);
+//	}
+//}
+
+void ModelPiece::DrawBuffers() {
 	int size = 0;
 	glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
 	glDrawElements(GL_TRIANGLES, size / sizeof(GLushort), GL_UNSIGNED_SHORT, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	if (isWireFrame) {
-		// Turn off wireframe mode
-		glPolygonMode(GL_FRONT, GL_FILL);
-		glPolygonMode(GL_BACK, GL_FILL);
-	}
 }
 
 void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el) {
@@ -133,14 +138,14 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 				PushIntoVector(cs, b_tl, new float[3] { 0.0, 1.0, 0.0 }, new float[4] { 0.0, 0.5, 0.0, 1.0 });
 
 				//back
-				PushIntoVector(cs, b_br, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0 - colour.red, 1.0 - colour.blue, 1.0
-						- colour.green, colour.alpha });
-				PushIntoVector(cs, b_bl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0 - colour.red, 1.0 - colour.blue, 1.0
-						- colour.green, colour.alpha });
-				PushIntoVector(cs, b_tl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0 - colour.red, 1.0 - colour.blue, 1.0
-						- colour.green, colour.alpha });
-				PushIntoVector(cs, b_tr, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0 - colour.red, 1.0 - colour.blue, 1.0
-						- colour.green, colour.alpha });
+				PushIntoVector(cs, b_br, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0f - colour.red, 1.0f - colour.blue,
+						1.0f - colour.green, colour.alpha });
+				PushIntoVector(cs, b_bl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0f - colour.red, 1.0f - colour.blue,
+						1.0f - colour.green, colour.alpha });
+				PushIntoVector(cs, b_tl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0f - colour.red, 1.0f - colour.blue,
+						1.0f - colour.green, colour.alpha });
+				PushIntoVector(cs, b_tr, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0f - colour.red, 1.0f - colour.blue,
+						1.0f - colour.green, colour.alpha });
 
 				//bottom
 				PushIntoVector(cs, b_bl, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.5, 0.0, 0.0, 1.0 });
@@ -169,20 +174,6 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 		}
 	}
 
-}
-
-void ModelPiece::PushIntoVector(std::vector<float> &cs, float* coord, float *normal, float* colour) {
-	cs.push_back(coord[0]);
-	cs.push_back(coord[1]);
-	cs.push_back(coord[2]);
-
-	cs.push_back(normal[0]);
-	cs.push_back(normal[1]);
-	cs.push_back(normal[2]);
-
-	cs.push_back(colour[0]);
-	cs.push_back(colour[1]);
-	cs.push_back(colour[2]);
 }
 
 void ModelPiece::MakeElements(std::vector<unsigned short> &el, int numElements, int cubeNum) {
@@ -238,30 +229,8 @@ void ModelPiece::GenerateBuffers() {
 	std::vector<unsigned short> el;
 	Convert(cs, el);
 
-	GenerateArrayBuffer(cs);
-	GenerateElementBuffer(el);
-}
-
-void ModelPiece::GenerateArrayBuffer(std::vector<float>& vertices) {
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glDeleteBuffers(1, &vbo);
-
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void ModelPiece::GenerateElementBuffer(std::vector<unsigned short>& elements) {
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glDeleteBuffers(1, &ibo);
-
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(unsigned short), &elements[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	GenerateArrayBuffer(vbo, cs);
+	GenerateElementBuffer(ibo, el);
 }
 
 } /* namespace Tetris3D */

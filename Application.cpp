@@ -43,7 +43,7 @@ void Application::Init() {
 
 	tetrisEngine = new TetrisEngine(input);
 
-	graphicsEngine = new GraphicsEngine(tetrisEngine);
+	graphicsEngine = new GraphicsEngine(tetrisEngine,input);
 
 	input->Init(input, graphicsEngine->GetManager());
 

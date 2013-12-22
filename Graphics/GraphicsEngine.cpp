@@ -9,8 +9,9 @@
 
 namespace Tetris3D {
 
-GraphicsEngine::GraphicsEngine(TetrisEngine* tetrisEngine) {
+GraphicsEngine::GraphicsEngine(TetrisEngine* tetrisEngine, InputManager* inputManager) {
 	logger = Logger::GetLogger();
+	this-> inputManager = inputManager;
 
 	screenWidth = 640;
 	screenHeight = 480;
@@ -32,6 +33,7 @@ GraphicsEngine::~GraphicsEngine() {
 	manager = 0;
 
 	tetrisEngine = 0;
+	inputManager = 0;
 
 	logger->info("Stopped Graphics engine.");
 
@@ -45,7 +47,8 @@ void GraphicsEngine::Init() {
 
 	program = new OpenGLProgram();
 
-	camera = new Camera(program);
+	camera = new Camera(program,inputManager);
+	camera->Init(camera);
 
 	model = new Model(program, tetrisEngine);
 
@@ -54,7 +57,7 @@ void GraphicsEngine::Init() {
 }
 
 void GraphicsEngine::Render() {
-	if (model->IsNeedToRender()) {
+	if (model->IsNeedToRender() || camera->IsNeedToRender()) {
 		manager->BeginScene(0.1, 0.1, 0.1, 1.0);
 
 		program->Render();

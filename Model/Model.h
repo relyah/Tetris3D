@@ -11,6 +11,7 @@
 #include "../OpenGL/OpenGLProgram.h"
 #include "../Tetris/TetrisEngine.h"
 #include "ModelPiece.h"
+#include "ModelGrid.h"
 
 namespace Tetris3D {
 
@@ -28,6 +29,9 @@ private:
 	TetrisEngine* tetrisEngine;
 	ModelPiece* currentPiece;
 	ModelPiece* well;
+	ModelGrid* grid;
+
+	bool isGenerateGrid;
 };
 
 } /* namespace Tetris3D */

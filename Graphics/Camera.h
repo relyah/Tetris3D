@@ -14,26 +14,51 @@
 
 #include "../Logger.h"
 #include "../OpenGL/OpenGLProgram.h"
+#include "../InputManager.h"
 
 namespace Tetris3D {
 
 class Camera {
 public:
-	Camera(OpenGLProgram* program);
+	Camera(OpenGLProgram* program, InputManager* inputManager);
 	virtual ~Camera();
 
-	void Init();
+	void Init(Camera* camera);
 	void Render();
+
+	bool IsNeedToRender() {return isNeedToRender;}
 private:
 	log4cpp::Category* logger;
 
 	OpenGLProgram* program;
+	InputManager* inputManager;
+	bool isRotate, isRotateX, isRotateY;
+	bool isGetFirstReading;
+	bool isNeedToRender;
+	double prevxPos;
+	double prevyPos;
+	double yAngle, xAngle;
 
 	glm::mat4 view;
 	glm::vec3 cameraPosition;
 	glm::vec3 cameraLookAt;
 	glm::vec3 cameraUp;
 	glm::vec3 cameraRight;
+
+	void OnMouseButton(int button, int action, int mods);
+	void OnMouseMove(double x, double y);
+	void InitView();
+	void GenerateView();
+
+	static Tetris3D::Camera* camera;
+
+	static void SOnMouseButton(int button, int action, int mods) {
+		camera->OnMouseButton(button, action, mods);
+	}
+
+	static void SOnMouseMove(double x, double y) {
+		camera->OnMouseMove(x, y);
+	}
 };
 
 } /* namespace Tetris3D */

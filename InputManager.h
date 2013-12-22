@@ -34,7 +34,13 @@ public:
 	bool IsSPressed();
 	bool IsDPressed();
 	bool IsPPressed();
+	bool IsXPressed();
+	bool IsYPressed();
+	bool IsCPressed();
 	bool IsSpacebarPressed();
+
+	void RegisterOnMouseButton(void (*onMouseButton)(int button, int action, int mods));
+	void RegisterOnMouseMove(void (*onMouseMove)(double x, double y));
 
 private:
 	OpenGLManager* opengl;
@@ -45,6 +51,9 @@ private:
 	bool isDownPressed;
 	log4cpp::Category* logger;
 	bool pressedKeys[GLFW_KEY_LAST];
+
+	void (*reg_onMouseButton)(int button, int action, int mods);
+	void (*reg_onMouseMove)(double x, double y);
 
 	void onKey(int key, int action, int mods);
 	void onMouseButton(int button, int action, int mods);
