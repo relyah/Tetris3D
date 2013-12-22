@@ -24,6 +24,7 @@ public:
 	bool CanRotateZCCW(Piece* piece);
 	bool CanRotateYCCW(Piece* piece);
 	bool CanRotateXCCW(Piece* piece);
+	Voxel* GetHighestVoxel(unsigned int col, unsigned int dep);
 
 	bool IsAdded() {
 		bool result = isAdded;
@@ -31,7 +32,9 @@ public:
 		return result;
 	}
 
-	virtual bool IsChanged() {return IsAdded();}
+	virtual bool IsChanged() {
+		return IsAdded();
+	}
 
 private:
 	bool isAdded;

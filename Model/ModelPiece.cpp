@@ -72,7 +72,7 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 				int row = v->GetLocation().row + piece->GetLocation().row;
 				int dep = v->GetLocation().dep + piece->GetLocation().dep;
 
-				float f_bl[3] = { (float) (col * sideLength - 5.0), (float) (-(row + 1) * sideLength + 14.0), (float) (dep
+				float f_bl[3] = { (float) (col * sideLength +xOffset), (float) (-(row + 1) * sideLength + yOffset), (float) (dep
 						* sideLength) };
 				float f_br[3] = { f_bl[0] + sideLength, f_bl[1], f_bl[2] };
 				float f_tl[3] = { f_bl[0], f_bl[1] + sideLength, f_bl[2] };

@@ -22,6 +22,7 @@ Model::Model(OpenGLProgram* program, TetrisEngine* tetrisEngine) {
 	grid->SetWell(tetrisEngine->GetWell());
 
 	shadow = new ModelShadow(program);
+	shadow->SetWell(tetrisEngine->GetWell());
 
 	isGenerateGrid = true;
 }
@@ -52,6 +53,7 @@ void Model::Render() {
 
 	well->Render(tetrisEngine->IsWellChanged());
 
+	shadow->SetPiece(tetrisEngine->GetCurrentPiece());
 	shadow->Render();
 }
 

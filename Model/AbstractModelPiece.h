@@ -46,6 +46,7 @@ protected:
 	float sideLength;
 	GLint attribute_coord3d, attribute_colour, attribute_normal;
 	GLint uniform_model;
+	float xOffset, yOffset;
 
 	virtual void GenerateBuffers()=0;
 	virtual void InitBuffers();
@@ -53,6 +54,7 @@ protected:
 	void PushIntoVector(std::vector<float> &cs, float* coord, float *normal, float* colour);
 	void GenerateArrayBuffer(GLuint& vbo, std::vector<float>& vertices);
 	void GenerateElementBuffer(GLuint& ibo, std::vector<unsigned short>& elements);
+
 
 };
 

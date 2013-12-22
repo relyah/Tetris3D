@@ -47,10 +47,6 @@ void ModelGrid::MakeGrid(std::vector<float> &cs) {
 	unsigned int maxRow = well->GetRow();
 	unsigned int maxDep = well->GetDep();
 
-
-	float xOffset = -5.0;
-	float yOffset = 14.0;
-
 	for (unsigned int row = 0; row <= maxRow; row++) {
 
 		float xStart = xOffset;

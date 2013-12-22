@@ -186,9 +186,9 @@ bool Well::CanRotateXCCW(Piece* piece) {
 
 				VoxelLocation l = v->GetLocation();
 
-				int newCol =l.col + piece->GetLocation().col;
-				int newRow =  size - 1 - l.dep + piece->GetLocation().row;
-				int newDep =  l.row + piece->GetLocation().dep;
+				int newCol = l.col + piece->GetLocation().col;
+				int newRow = size - 1 - l.dep + piece->GetLocation().row;
+				int newDep = l.row + piece->GetLocation().dep;
 
 				if (!IsThereSpaceHere(newCol, newRow, newDep))
 					return false;
@@ -241,4 +241,23 @@ void Well::RemoveFullPlane() {
 
 }
 
+Voxel* Well::GetHighestVoxel(unsigned int col, unsigned int dep) {
+
+	if (!Validate(col, 0, dep)) {
+		return 0;
+	}
+
+	for (unsigned int r = 0; r<row; r++) {
+		Voxel* v = container[col][r][dep];
+		if (v) {
+			return v;
+		}
+	}
+
+	return 0;
+
+
+}
+
 } /* namespace Tetris3D */
+

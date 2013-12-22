@@ -14,7 +14,9 @@ AbstractModelPiece::AbstractModelPiece(OpenGLProgram* program) {
 	logger->info("Initialising abstract model piece.");
 	this->program = program;
 	isWireFrame = false;
-	sideLength = 2.0;
+	sideLength = 2.0; //!
+	xOffset = -5.0; //!
+	yOffset = 14.0; //!
 
 	this->attribute_coord3d = program->GetAttributeCoord3d();
 	this->attribute_colour = program->GetAttributeColour();

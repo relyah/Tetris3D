@@ -177,4 +177,20 @@ unsigned int Piece::GetTopDep() {
 	return 0;
 }
 
+Voxel* Piece::GetLowestVoxel(unsigned int col, unsigned int dep) {
+	if (!Validate(col, 0, dep)) {
+		return 0;
+	}
+
+	for (int r = size - 1; r >= 0; r--) {
+		Voxel* v = container[col][r][dep];
+		if (v) {
+			return v;
+		}
+	}
+
+	return 0;
+
+}
+
 } /* namespace Tetris3D */

@@ -37,6 +37,9 @@ private:
 	glm::mat4 translate;
 	GLuint vbo; //vertex buffer object
 	GLuint ibo; //index buffer object
+
+	void GenerateCoordinates(std::vector<float>& cs, std::vector<unsigned short>& el);
+	void MakeElements(std::vector<unsigned short> &el, int numElements, int shadowNum);
 };
 
 } /* namespace Tetris3D */

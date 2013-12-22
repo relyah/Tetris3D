@@ -27,6 +27,7 @@ public:
 	unsigned int GetLeftCol();
 	unsigned int GetTopDep();
 	unsigned int GetBottomRow();
+	Voxel* GetLowestVoxel(unsigned int col, unsigned int dep);
 
 	unsigned int GetSize() const {
 		return size;
@@ -45,8 +46,6 @@ public:
 private:
 	unsigned int size;
 	bool isMoved;
-
-	bool Validate(unsigned int position);
 };
 
 } /* namespace Tetris3D */

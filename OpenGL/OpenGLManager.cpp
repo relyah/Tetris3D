@@ -57,6 +57,9 @@ void OpenGLManager::Init(OpenGLManager* manager) {
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_CULL_FACE); // cull face
+	glCullFace(GL_FRONT); // cull back face //GL_BACK
+	glFrontFace(GL_CCW); // GL_CCW for counter clock-wise //GL_CW clockwise
 
 	glDebugMessageCallbackARB(gl_debug_callback, this);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
