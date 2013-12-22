@@ -23,7 +23,6 @@ ModelGrid::~ModelGrid() {
 }
 
 void ModelGrid::GenerateBuffers() {
-
 	std::vector<float> grid;
 	MakeGrid(grid);
 	GenerateArrayBuffer(vbo, grid);
@@ -48,36 +47,80 @@ void ModelGrid::MakeGrid(std::vector<float> &cs) {
 	unsigned int maxRow = well->GetRow();
 	unsigned int maxDep = well->GetDep();
 
-	float z = -sideLength * maxDep;
+
+	float xOffset = -5.0;
+	float yOffset = 14.0;
 
 	for (unsigned int row = 0; row <= maxRow; row++) {
 
-		float xStart = 0.0;
-		float y = -(float) (row * sideLength);
+		float xStart = xOffset;
+		float y = -(float) (row * sideLength) + yOffset;
 
-		float xEnd = (float) (maxCol * sideLength);
+		float xEnd = (float) (maxCol * sideLength) + xOffset;
 
-		float start[3] = { xStart, y, z };
-		float end[3] = { xEnd, y, z };
+		float zStart = 0.0; //sideLength * maxDep;
+		PushIntoVector(cs, new float[3] { xStart, y, zStart }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0,
+				0.0, 1.0 });
+		PushIntoVector(cs, new float[3] { xEnd, y, zStart }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
 
-		PushIntoVector(cs, start, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0, 1.0 });
-		PushIntoVector(cs, end, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0, 1.0 });
+		float zEnd = sideLength * maxDep;
+		PushIntoVector(cs, new float[3] { xStart, y, zStart }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0,
+				0.0, 1.0 });
+		PushIntoVector(cs, new float[3] { xStart, y, zEnd }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
+
+		PushIntoVector(cs, new float[3] { xEnd, y, zStart }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
+		PushIntoVector(cs, new float[3] { xEnd, y, zEnd }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
 
 	}
 
 	for (unsigned int col = 0; col <= maxCol; col++) {
 
-		float yStart = 0.0;
-		float x = (float) (col * sideLength);
+		float yStart = yOffset;
+		float yEnd = -(float) (maxRow * sideLength) + yOffset;
 
-		float yEnd = -(float) (maxRow * sideLength);
+		float x = (float) (col * sideLength) + xOffset;
 
-		float start[3] = { x, yStart, z };
-		float end[3] = { x, yEnd, z };
+		float zStart = 0.0;
+		float zEnd = sideLength * maxDep;
 
-		PushIntoVector(cs, start, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 0.0, 1.0, 1.0 });
-		PushIntoVector(cs, end, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 0.0, 1.0, 1.0 });
+		PushIntoVector(cs, new float[3] { x, yStart, zStart }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 0.0, 1.0, 1.0 });
+		PushIntoVector(cs, new float[3] { x, yEnd, zStart }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 0.0, 1.0, 1.0 });
 
+		PushIntoVector(cs, new float[3] { x, yEnd, zStart }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
+		PushIntoVector(cs, new float[3] { x, yEnd, zEnd }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
+
+	}
+
+	for (unsigned int dep = 1; dep <= maxDep; dep++) {
+
+		float z = dep * sideLength;
+
+		float xStart = xOffset;
+		float xEnd = (float) (maxCol * sideLength) + xOffset;
+
+		float yStart = 14.0;
+		float yEnd = -(float) (maxRow * sideLength) + yOffset;
+
+		PushIntoVector(cs, new float[3] { xStart, yStart, z }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0,
+				0.0, 1.0 });
+		PushIntoVector(cs, new float[3] { xStart, yEnd, z }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
+
+		PushIntoVector(cs, new float[3] { xEnd, yStart, z }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
+		PushIntoVector(cs, new float[3] { xEnd, yEnd, z }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
+
+		PushIntoVector(cs, new float[3] { xStart, yEnd, z }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
+		PushIntoVector(cs, new float[3] { xEnd, yEnd, z }, new float[3] { 0.0, 0.0, -1.0 }, new float[4] { 1.0, 1.0, 0.0,
+				1.0 });
 	}
 
 }

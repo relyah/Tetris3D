@@ -98,7 +98,8 @@ void Camera::OnMouseMove(double x, double y) {
 			return;
 		}
 		isNeedToRender = false;
-		if (isRotateX) {
+		//if (isRotateX)
+		{
 			//pitch
 			//logger->debug("RotateX");
 

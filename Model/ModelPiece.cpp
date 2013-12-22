@@ -28,56 +28,7 @@ void ModelPiece::InitBuffers()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	AbstractModelPiece::InitBuffers();
 }
-//void ModelPiece::Render(bool isGenerateBuffers) {
-//
-//	if (isGenerateBuffers) {
-//		GenerateBuffers();
-//	}
-//
-//	if (isWireFrame) {
-//		// Turn on wireframe mode
-//		glPolygonMode(GL_FRONT, GL_LINE);
-//		glPolygonMode(GL_BACK, GL_LINE);
-//	}
-//
-//	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-//
-//	//InitBuffers();
-//	glEnableVertexAttribArray(attribute_coord3d);
-//	glEnableVertexAttribArray(attribute_normal);
-//	glEnableVertexAttribArray(attribute_colour);
-//
-//	glm::mat4 translate = glm::mat4(1.0f);
-//	glUniformMatrix4fv(uniform_model, 1, GL_FALSE, glm::value_ptr(translate));
-//
-//	glVertexAttribPointer(attribute_coord3d, 3, GL_FLOAT, GL_FALSE, sizeof(struct VertexStructure),  // stride
-//	0);  // offset
-//
-//	glVertexAttribPointer(attribute_normal, 3,
-//	GL_FLOAT,
-//	GL_FALSE, sizeof(struct VertexStructure),  // stride
-//	(GLvoid*) offsetof(struct VertexStructure, normal));
-//
-//	glVertexAttribPointer(attribute_colour, 3,
-//	GL_FLOAT,
-//	GL_FALSE, sizeof(struct VertexStructure),  // stride
-//	(GLvoid*) offsetof(struct VertexStructure, colour));
-//
-//	//DrawBuffers();
-//
-//	int size = 0;
-//	glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
-//	glDrawElements(GL_TRIANGLES, size / sizeof(GLushort), GL_UNSIGNED_SHORT, 0);
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-//
-//	if (isWireFrame) {
-//		// Turn off wireframe mode
-//		glPolygonMode(GL_FRONT, GL_FILL);
-//		glPolygonMode(GL_BACK, GL_FILL);
-//	}
-//}
+
 
 void ModelPiece::DrawBuffers() {
 	int size = 0;
