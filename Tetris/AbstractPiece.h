@@ -24,6 +24,8 @@ public:
 	AbstractPiece(int col, int row, int dep);
 	virtual ~AbstractPiece();
 
+	virtual void Move(int incCol, int incRow, int incDep);
+
 	void Set(unsigned int col, unsigned int row, unsigned int dep, bool flag);
 	void Set(unsigned int col, unsigned int row, unsigned int dep, Voxel* voxel);
 
@@ -45,11 +47,16 @@ public:
 		return row;
 	}
 
+	VoxelLocation GetLocation() {
+		return location;
+	}
+
 protected:
 	PieceArray container;
 	unsigned int col;
 	unsigned int row;
 	unsigned int dep;
+	VoxelLocation location;
 
 	virtual void CreateContainer();
 	virtual bool Validate(unsigned int _col, unsigned int _row, unsigned int _dep) {

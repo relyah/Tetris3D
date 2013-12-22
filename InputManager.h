@@ -33,6 +33,8 @@ public:
 	bool IsAPressed();
 	bool IsSPressed();
 	bool IsDPressed();
+	bool IsPPressed();
+	bool IsSpacebarPressed();
 
 private:
 	OpenGLManager* opengl;

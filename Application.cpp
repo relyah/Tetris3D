@@ -23,7 +23,7 @@ Application::Application() {
 }
 
 Application::~Application() {
-	logger->info("Shuting down Tetris3D.");
+	logger->info("Stopping Tetris3D.");
 
 	delete input;
 	input = 0;
@@ -32,7 +32,7 @@ Application::~Application() {
 	delete graphicsEngine;
 	graphicsEngine = 0;
 
-	logger->info("Tetris3D End.");
+	logger->info("Stopped Tetris3D.");
 	logger = 0;
 }
 

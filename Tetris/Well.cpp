@@ -22,6 +22,8 @@ bool Well::CanMove(Piece* piece, int incCol, int incRow, int incDep) {
 	if (pieceBottomRow >= this->row - 1)
 		return false;
 
+	VoxelLocation offset = piece->GetLocation();
+
 	int otherSize = piece->GetSize();
 	for (int r = pieceBottomRow; r >= 0; r--) {
 		for (int c = 0; c < otherSize; c++) {
@@ -31,7 +33,8 @@ bool Well::CanMove(Piece* piece, int incCol, int incRow, int incDep) {
 				if (!v)
 					continue;
 
-				VoxelLocation newLocation = v->GetLocation().Move(incCol, incRow, incDep);
+				VoxelLocation newLocation = v->GetLocation().Move(incCol + offset.col, incRow + offset.row, incDep
+						+ offset.dep);
 				if (newLocation.col >= this->col)
 					return false;
 				if (newLocation.row >= this->row)
@@ -62,9 +65,12 @@ void Well::Add(Piece* other) {
 
 				VoxelLocation l = v->GetLocation();
 
-				this->Set(l.col, l.row, l.dep, true); //make a new voxel
-				Voxel* newV = this->container[l.col][l.row][l.dep];
-				*newV = *v; //this should make a copy
+				VoxelLocation locInWell = l.Move(other->GetLocation().col, other->GetLocation().row, other->GetLocation().dep);
+
+				this->Set(locInWell.col, locInWell.row, locInWell.dep, true); //make a new voxel
+				Voxel* newV = this->container[locInWell.col][locInWell.row][locInWell.dep];
+				VoxelColour vc = VoxelColour(v->GetColour());
+				newV->SetColour(vc); //this should make a copy
 			}
 		}
 	}
@@ -74,10 +80,51 @@ void Well::Add(Piece* other) {
 	isAdded = true;
 }
 
+void Well::Drop(Piece* piece) {
+
+	int dropDistance = row;
+
+	unsigned int size = piece->GetSize();
+
+	for (unsigned int d = 0; d < size; d++) {
+		for (int r = size - 1; r >= 0; r--) {
+			for (int c = size - 1; c >= 0; c--) {
+				Voxel* v = (*piece)(c, r, d);
+
+				if (!v)
+					continue;
+
+				int pieceRowInWell = v->GetLocation().row + piece->GetLocation().row;
+
+				//get drop distance for empty well
+				dropDistance = GetSmallestDistance(row - 1, pieceRowInWell, dropDistance);
+
+				//get drop distance when well contains pieces
+				int wellCol = v->GetLocation().col + piece->GetLocation().col;
+				int wellDep = v->GetLocation().dep + piece->GetLocation().dep;
+				for (int wellRow = row - 1; wellRow >= 0; wellRow--) {
+					//check for piece
+					if (this->container[wellCol][wellRow][wellDep]) {
+						dropDistance = GetSmallestDistance(wellRow - 1, pieceRowInWell, dropDistance);
+					}
+				}
+			}
+		}
+	}
+	piece->Move(0, dropDistance, 0);
+}
+
+int Well::GetSmallestDistance(int wellRow, int pieceRowInWell, int currentDistance) {
+	int newDD = wellRow - pieceRowInWell; //calculate distance
+	if (newDD < currentDistance) {
+		return newDD;
+	} else {
+		return currentDistance;
+	}
+}
+
 bool Well::CanRotateZCCW(Piece* other) {
 	unsigned int size = other->GetSize();
-	unsigned int topRow = other->GetTopRow();
-	unsigned int leftCol = other->GetLeftCol();
 
 	for (unsigned int d = 0; d < size; d++) {
 		for (unsigned int r = 0; r < size; r++) {
@@ -88,10 +135,11 @@ bool Well::CanRotateZCCW(Piece* other) {
 
 				VoxelLocation l = v->GetLocation();
 
-				int newRow = size - 1 - c;
-				int newCol = r;
+				int newCol = l.row + other->GetLocation().col;
+				int newRow = size - 1 - l.col + other->GetLocation().row;
+				int newDep = l.dep + other->GetLocation().dep;
 
-				if (!IsThereSpaceHere(leftCol+newCol, topRow+newRow,l.dep))
+				if (!IsThereSpaceHere(newCol, newRow, newDep))
 					return false;
 
 			}
@@ -105,11 +153,11 @@ bool Well::IsThereSpaceHere(int col, int row, int dep) {
 	if (!Validate(col, row, dep))
 		return false;
 
-	return container[col][row][dep]==0;
+	return container[col][row][dep] == 0;
 }
 
 void Well::RemoveFullPlane() {
-	//go through all rows and look for full planes
+//go through all rows and look for full planes
 	for (unsigned int r = 0; r < row; r++) {
 		bool isPlaneFull = true;
 		for (unsigned int c = 0; c < col && isPlaneFull; c++) {

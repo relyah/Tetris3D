@@ -20,6 +20,7 @@ public:
 
 	bool CanMove(Piece* piece, int incCol = 0, int incRow = 0, int incDep = 0);
 	void Add(Piece* piece);
+	void Drop(Piece* other);
 	bool CanRotateZCCW(Piece* other);
 
 	bool IsAdded() {
@@ -35,6 +36,7 @@ private:
 
 	void RemoveFullPlane();
 	bool IsThereSpaceHere(int col, int row, int dep);
+	int GetSmallestDistance(int wellRow, int pieceRowInWell, int currentDistance);
 
 };
 

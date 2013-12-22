@@ -29,9 +29,9 @@ OpenGLManager::~OpenGLManager() {
 }
 
 void OpenGLManager::Shutdown() {
-	logger->info("Open GL manager shutdown requested.");
+	logger->info("Shutting down Open GL manager.");
 	glfwSetWindowShouldClose(window, 1);
-}
+	logger->info("Shutdown Open GL manager.");}
 
 void OpenGLManager::Init(OpenGLManager* manager) {
 	logger->info("Initialising OpenGL.");

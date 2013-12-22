@@ -19,17 +19,18 @@ Piece::~Piece() {
 }
 
 void Piece::Move(int incCol, int incRow, int incDep) {
+	AbstractPiece::Move(incCol, incRow, incDep);
 	isMoved = true;
-	for (unsigned int c = 0; c < size; c++) {
-		for (unsigned int r = 0; r < size; r++) {
-			for (unsigned int d = 0; d < size; d++) {
-				Voxel* v = container[c][r][d];
-				if (v != 0) {
-					v->Move(incCol, incRow, incDep);
-				}
-			}
-		}
-	}
+//	for (unsigned int c = 0; c < size; c++) {
+//		for (unsigned int r = 0; r < size; r++) {
+//			for (unsigned int d = 0; d < size; d++) {
+//				Voxel* v = container[c][r][d];
+//				if (v != 0) {
+//					v->Move(incCol, incRow, incDep);
+//				}
+//			}
+//		}
+//	}
 }
 
 void Piece::RotateZCCW() {
@@ -38,35 +39,33 @@ void Piece::RotateZCCW() {
 	unsigned int colLimit = floor((float) n / 2.0);
 	unsigned int rowLimit = ceil((float) n / 2.0);
 
-	unsigned int topRow = GetTopRow();
-	unsigned int leftCol = GetLeftCol();
-	unsigned int topDep = GetTopDep();
+//	unsigned int topRow = GetTopRow();
+//	unsigned int leftCol = GetLeftCol();
+//	unsigned int topDep = GetTopDep();
 
 	for (unsigned int d = 0; d < size; d++) {
 		for (unsigned int c = 0; c < colLimit; c++) {
 			for (unsigned int r = 0; r < rowLimit; r++) {
 
 				Voxel* temp = container[c][r][d];
-				if (temp != 0)
-				{
+				if (temp != 0) {
 					temp = temp->Copy();
 				}
 
-				SwapVoxels(leftCol, topRow, topDep, c, r, d, container[n - 1 - r][c][d]); //	container[c][r][d] = container[n - 1 - r][c][d];
+				SwapVoxels(c, r, d, container[n - 1 - r][c][d]); //	container[c][r][d] = container[n - 1 - r][c][d];
 
-				SwapVoxels(leftCol, topRow, topDep, n - 1 - r, c, d, container[n - 1 - c][n - 1 - r][d]); //container[n - 1 - r][c][d] = container[n - 1 - c][n - 1 - r][d];
+				SwapVoxels(n - 1 - r, c, d, container[n - 1 - c][n - 1 - r][d]); //container[n - 1 - r][c][d] = container[n - 1 - c][n - 1 - r][d];
 
-				SwapVoxels(leftCol, topRow, topDep, n - 1 - c, n - 1 - r, d, container[r][n - 1 - c][d]); // container[n - 1 - c][n - 1 - r][d] = container[r][n - 1 - c][d];
+				SwapVoxels(n - 1 - c, n - 1 - r, d, container[r][n - 1 - c][d]); // container[n - 1 - c][n - 1 - r][d] = container[r][n - 1 - c][d];
 
-				SwapVoxels(leftCol, topRow, topDep, r, n - 1 - c, d, temp); //container[r][n - 1 - c][d] = temp;
+				SwapVoxels(r, n - 1 - c, d, temp); //container[r][n - 1 - c][d] = temp;
 
 			}
 		}
 	}
 }
 
-void Piece::SwapVoxels(unsigned int leftCol, unsigned int topRow, unsigned int topDep, unsigned int c1, unsigned int r1,
-		unsigned int d1, Voxel* src) {
+void Piece::SwapVoxels(unsigned int c1, unsigned int r1, unsigned int d1, Voxel* src) {
 
 	Voxel* dest = container[c1][r1][d1];
 	if (src == 0) {
@@ -79,9 +78,9 @@ void Piece::SwapVoxels(unsigned int leftCol, unsigned int topRow, unsigned int t
 
 	if (dest == 0) {
 		Voxel* v = new Voxel();
-		v->GetLocation().col = leftCol + c1;
-		v->GetLocation().row = topRow + r1;
-		v->GetLocation().dep = topDep + d1;
+		v->GetLocation().col = c1;
+		v->GetLocation().row = r1;
+		v->GetLocation().dep = d1;
 		container[c1][r1][d1] = v;
 		dest = container[c1][r1][d1];
 	}

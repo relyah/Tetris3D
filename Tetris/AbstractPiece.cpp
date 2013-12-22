@@ -13,6 +13,9 @@ AbstractPiece::AbstractPiece(int col, int row, int dep) {
 	this->col = dep;
 	this->row = row;
 	this->dep = dep;
+	location.col = 0;
+	location.row = 0;
+	location.dep = 0;
 	CreateContainer();
 }
 
@@ -29,6 +32,15 @@ AbstractPiece::~AbstractPiece() {
 			}
 		}
 	}
+}
+
+void AbstractPiece::Move(int incCol, int incRow, int incDep) {
+	VoxelLocation newLocation(location);
+	newLocation.col += incCol;
+	newLocation.row += incRow;
+	newLocation.dep += incDep;
+
+	location = newLocation;
 }
 
 void AbstractPiece::Set(unsigned int col, unsigned int row, unsigned int dep, bool flag) {

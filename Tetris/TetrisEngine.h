@@ -54,6 +54,7 @@ private:
 	bool isCanStartMoveDelay;
 	bool isDrop;
 	bool isGameOver;
+	bool isPaused;
 
 	void PickPiece();
 	bool IsNeedToMove();

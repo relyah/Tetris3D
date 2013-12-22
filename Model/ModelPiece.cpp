@@ -101,9 +101,9 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 				if (v == 0)
 					continue;
 
-				int col = v->GetLocation().col;
-				int row = v->GetLocation().row;
-				int dep = v->GetLocation().dep;
+				int col = v->GetLocation().col + piece->GetLocation().col;
+				int row = v->GetLocation().row + piece->GetLocation().row;
+				int dep = v->GetLocation().dep + piece->GetLocation().dep;
 
 				float f_bl[3] = { (float) (col * sideLength - 5.0), (float) (-(row + 1) * sideLength + 14.0), (float) (dep
 						* sideLength) };
@@ -136,11 +136,11 @@ void ModelPiece::Convert(std::vector<float> &cs, std::vector<unsigned short> &el
 				PushIntoVector(cs, b_br, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0 - colour.red, 1.0 - colour.blue, 1.0
 						- colour.green, colour.alpha });
 				PushIntoVector(cs, b_bl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0 - colour.red, 1.0 - colour.blue, 1.0
-					- colour.green, colour.alpha});
+						- colour.green, colour.alpha });
 				PushIntoVector(cs, b_tl, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0 - colour.red, 1.0 - colour.blue, 1.0
-					- colour.green, colour.alpha });
+						- colour.green, colour.alpha });
 				PushIntoVector(cs, b_tr, new float[3] { 0.0, 0.0, 1.0 }, new float[4] { 1.0 - colour.red, 1.0 - colour.blue, 1.0
-					- colour.green, colour.alpha});
+						- colour.green, colour.alpha });
 
 				//bottom
 				PushIntoVector(cs, b_bl, new float[3] { 0.0, -1.0, 0.0 }, new float[4] { 0.5, 0.0, 0.0, 1.0 });

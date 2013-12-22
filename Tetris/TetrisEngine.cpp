@@ -19,6 +19,7 @@ TetrisEngine::TetrisEngine(InputManager* inputManager) {
 	isGameOver = false;
 	isCanStartMoveDelay = true;
 	moveDelay = 0.0;
+	isPaused = false;
 
 	time(&timer);
 
@@ -43,6 +44,16 @@ void TetrisEngine::Run() {
 
 	if (isGameOver)
 		return;
+
+	if (inputManager->IsPPressed())
+	{
+		isPaused = !isPaused;
+	}
+	if (isPaused)
+	{
+		time(&timer);
+		return;
+	}
 
 	bool isKeyPressed = false;
 	int incDep = 0;
@@ -70,11 +81,15 @@ void TetrisEngine::Run() {
 			currentPiece->RotateZCCW();
 		}
 	}
+	if (inputManager->IsSpacebarPressed()) {
+		well->Drop(currentPiece);
+		isDrop = true;
+	}
 	if (IsNeedToMove()) {
 		if (isCanStartMoveDelay && well->CanMove(currentPiece, 0, 1, 0)) {
 			logger->debug("Piece moved.");
 
-		//	currentPiece->Move(0, 1, 0);
+			currentPiece->Move(0, 1, 0);
 
 		} else if (isCanStartMoveDelay && !isDrop) {
 			logger->debug("Entering move delay.");
@@ -151,18 +166,18 @@ void TetrisEngine::PickPiece() {
 	v->GetPosition().z = 0.0;
 	currentPiece->Set(v->GetLocation().col, v->GetLocation().row, v->GetLocation().dep, v);
 
- v = new Voxel();
-		v->GetColour().alpha = 1.0;
-		v->GetColour().blue = 0.0;
-		v->GetColour().green = 0.0;
-		v->GetColour().red = 1.0;
-		v->GetLocation().col = 1;
-		v->GetLocation().row = 0;
-		v->GetLocation().dep = 0;
-		v->GetPosition().x = 0.0;
-		v->GetPosition().y = 0.0;
-		v->GetPosition().z = 0.0;
-		currentPiece->Set(v->GetLocation().col, v->GetLocation().row, v->GetLocation().dep, v);
+	v = new Voxel();
+	v->GetColour().alpha = 1.0;
+	v->GetColour().blue = 0.0;
+	v->GetColour().green = 0.0;
+	v->GetColour().red = 1.0;
+	v->GetLocation().col = 1;
+	v->GetLocation().row = 0;
+	v->GetLocation().dep = 0;
+	v->GetPosition().x = 0.0;
+	v->GetPosition().y = 0.0;
+	v->GetPosition().z = 0.0;
+	currentPiece->Set(v->GetLocation().col, v->GetLocation().row, v->GetLocation().dep, v);
 }
 
 } /* namespace Tetris3D */

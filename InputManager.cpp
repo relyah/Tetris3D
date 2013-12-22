@@ -21,15 +21,15 @@ InputManager::InputManager() {
 
 	logger = Logger::GetLogger();
 
-	for (int i=0; i<GLFW_KEY_LAST; i++)
-	{
+	for (int i = 0; i < GLFW_KEY_LAST; i++) {
 		pressedKeys[i] = false;
 	}
 }
 
 InputManager::~InputManager() {
-	logger->info("Input manager shutting down.");
+	logger->info("Stopping input manager.");
 	opengl = 0;
+	logger->info("Stopped input manager.");
 	logger = 0;
 }
 
@@ -75,6 +75,13 @@ bool InputManager::IsSPressed() {
 }
 bool InputManager::IsDPressed() {
 	return ToggleKey(GLFW_KEY_D);
+}
+bool InputManager::IsPPressed()
+{
+	return ToggleKey(GLFW_KEY_P);
+}
+bool InputManager::IsSpacebarPressed() {
+	return ToggleKey(GLFW_KEY_SPACE);
 }
 
 bool InputManager::ToggleKey(int key) {

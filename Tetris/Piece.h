@@ -45,8 +45,7 @@ private:
 	bool isMoved;
 
 	bool Validate(unsigned int position);
-	void SwapVoxels(unsigned int leftCol, unsigned int topRow, unsigned int topDep, unsigned int c1, unsigned int r1,
-			unsigned int d1, Voxel* src);
+	void SwapVoxels(unsigned int c1, unsigned int r1, unsigned int d1, Voxel* src);
 };
 
 } /* namespace Tetris3D */
