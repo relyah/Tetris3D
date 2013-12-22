@@ -20,16 +20,10 @@ TetrisEngine::TetrisEngine(InputManager* inputManager) {
 	isCanStartMoveDelay = true;
 	moveDelay = 0.0;
 
-	struct tm y2k;
-	y2k.tm_hour = 0;
-	y2k.tm_min = 0;
-	y2k.tm_sec = 0;
-	y2k.tm_year = 100;
-	y2k.tm_mon = 0;
-	y2k.tm_mday = 1;
-	timer = mktime(&y2k);
+	time(&timer);
 
 	well = new Well(10, 14, 5);
+	isWellChanged = true;
 
 	currentPiece = 0;
 	PickPiece();
@@ -70,11 +64,17 @@ void TetrisEngine::Run() {
 		logger->debug("Piece moved by user.");
 		currentPiece->Move(incCol, 0, incDep);
 	}
+	if (inputManager->IsAPressed()) {
+		if (well->CanRotateZCCW(currentPiece)) {
+			logger->debug("Piece rotated (Z-CCW) by user.");
+			currentPiece->RotateZCCW();
+		}
+	}
 	if (IsNeedToMove()) {
 		if (isCanStartMoveDelay && well->CanMove(currentPiece, 0, 1, 0)) {
 			logger->debug("Piece moved.");
 
-			currentPiece->Move(0, 1, 0);
+		//	currentPiece->Move(0, 1, 0);
 
 		} else if (isCanStartMoveDelay && !isDrop) {
 			logger->debug("Entering move delay.");
@@ -137,7 +137,7 @@ void TetrisEngine::PickPiece() {
 
 	logger->debug("Making new piece.");
 
-	currentPiece = new Piece(3);
+	currentPiece = new Piece(2);
 	Voxel* v = new Voxel();
 	v->GetColour().alpha = 1.0;
 	v->GetColour().blue = 0.0;
@@ -149,7 +149,20 @@ void TetrisEngine::PickPiece() {
 	v->GetPosition().x = 0.0;
 	v->GetPosition().y = 0.0;
 	v->GetPosition().z = 0.0;
-	currentPiece->Set(0, 0, 0, v);
+	currentPiece->Set(v->GetLocation().col, v->GetLocation().row, v->GetLocation().dep, v);
+
+ v = new Voxel();
+		v->GetColour().alpha = 1.0;
+		v->GetColour().blue = 0.0;
+		v->GetColour().green = 0.0;
+		v->GetColour().red = 1.0;
+		v->GetLocation().col = 1;
+		v->GetLocation().row = 0;
+		v->GetLocation().dep = 0;
+		v->GetPosition().x = 0.0;
+		v->GetPosition().y = 0.0;
+		v->GetPosition().z = 0.0;
+		currentPiece->Set(v->GetLocation().col, v->GetLocation().row, v->GetLocation().dep, v);
 }
 
 } /* namespace Tetris3D */

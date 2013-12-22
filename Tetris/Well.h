@@ -20,6 +20,7 @@ public:
 
 	bool CanMove(Piece* piece, int incCol = 0, int incRow = 0, int incDep = 0);
 	void Add(Piece* piece);
+	bool CanRotateZCCW(Piece* other);
 
 	bool IsAdded() {
 		bool result = isAdded;
@@ -33,6 +34,7 @@ private:
 	bool isAdded;
 
 	void RemoveFullPlane();
+	bool IsThereSpaceHere(int col, int row, int dep);
 
 };
 

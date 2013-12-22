@@ -30,6 +30,9 @@ public:
 	bool IsRightPressed();
 	bool IsUpPressed();
 	bool IsDownPressed();
+	bool IsAPressed();
+	bool IsSPressed();
+	bool IsDPressed();
 
 private:
 	OpenGLManager* opengl;
@@ -39,12 +42,13 @@ private:
 	bool isUpPressed;
 	bool isDownPressed;
 	log4cpp::Category* logger;
+	bool pressedKeys[GLFW_KEY_LAST];
 
 	void onKey(int key, int action, int mods);
 	void onMouseButton(int button, int action, int mods);
 	void onMouseMove(double x, double y);
 	void onMouseWheel(double xoffset, double yoffset);
-	bool ToggleKey(bool& flag);
+	bool ToggleKey(int key);
 
 	static void glfw_onKey(GLFWwindow *window, int key, int scancode, int action, int mods) {
 		manager->onKey(key, action, mods);

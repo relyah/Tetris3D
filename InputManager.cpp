@@ -20,6 +20,11 @@ InputManager::InputManager() {
 	isRightPressed = false;
 
 	logger = Logger::GetLogger();
+
+	for (int i=0; i<GLFW_KEY_LAST; i++)
+	{
+		pressedKeys[i] = false;
+	}
 }
 
 InputManager::~InputManager() {
@@ -47,25 +52,34 @@ void InputManager::PollEvents() {
 }
 
 bool InputManager::IsEscapePressed() {
-	return ToggleKey(isEscapePressed);
+	return ToggleKey(GLFW_KEY_ESCAPE);
 }
 
 bool InputManager::IsLeftPressed() {
-	return ToggleKey(isLeftPressed);
+	return ToggleKey(GLFW_KEY_LEFT);
 }
 bool InputManager::IsRightPressed() {
-	return ToggleKey(isRightPressed);
+	return ToggleKey(GLFW_KEY_RIGHT);
 }
 bool InputManager::IsUpPressed() {
-	return ToggleKey(isUpPressed);
+	return ToggleKey(GLFW_KEY_UP);
 }
 bool InputManager::IsDownPressed() {
-	return ToggleKey(isDownPressed);
+	return ToggleKey(GLFW_KEY_DOWN);
+}
+bool InputManager::IsAPressed() {
+	return ToggleKey(GLFW_KEY_A);
+}
+bool InputManager::IsSPressed() {
+	return ToggleKey(GLFW_KEY_S);
+}
+bool InputManager::IsDPressed() {
+	return ToggleKey(GLFW_KEY_D);
 }
 
-bool InputManager::ToggleKey(bool& flag) {
-	bool result = flag;
-	flag = false;
+bool InputManager::ToggleKey(int key) {
+	bool result = pressedKeys[key];
+	pressedKeys[key] = false;
 	return result;
 }
 
@@ -76,12 +90,7 @@ void InputManager::onKey(int key, int action, int mods) {
 
 	logger->debug(sstm.str());
 
-	isEscapePressed = key == GLFW_KEY_ESCAPE && action == GLFW_PRESS;
-
-	isUpPressed = key == GLFW_KEY_UP && action == GLFW_PRESS;
-	isDownPressed = key == GLFW_KEY_DOWN && action == GLFW_PRESS;
-	isLeftPressed = key == GLFW_KEY_LEFT && action == GLFW_PRESS;
-	isRightPressed = key == GLFW_KEY_RIGHT && action == GLFW_PRESS;
+	pressedKeys[key] = action == GLFW_PRESS;
 }
 
 void InputManager::onMouseButton(int button, int action, int mods) {

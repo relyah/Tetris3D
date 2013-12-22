@@ -19,6 +19,8 @@ public:
 
 	void Move(int incCol, int incRow, int incDep);
 
+	Voxel* Copy();
+
 	VoxelColour& GetColour() {
 		return colour;
 	}

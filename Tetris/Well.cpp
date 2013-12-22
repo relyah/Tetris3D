@@ -74,6 +74,40 @@ void Well::Add(Piece* other) {
 	isAdded = true;
 }
 
+bool Well::CanRotateZCCW(Piece* other) {
+	unsigned int size = other->GetSize();
+	unsigned int topRow = other->GetTopRow();
+	unsigned int leftCol = other->GetLeftCol();
+
+	for (unsigned int d = 0; d < size; d++) {
+		for (unsigned int r = 0; r < size; r++) {
+			for (unsigned int c = 0; c < size; c++) {
+				Voxel* v = (*other)(c, r, d);
+				if (v == 0)
+					continue;
+
+				VoxelLocation l = v->GetLocation();
+
+				int newRow = size - 1 - c;
+				int newCol = r;
+
+				if (!IsThereSpaceHere(leftCol+newCol, topRow+newRow,l.dep))
+					return false;
+
+			}
+		}
+	}
+	return true;
+
+}
+
+bool Well::IsThereSpaceHere(int col, int row, int dep) {
+	if (!Validate(col, row, dep))
+		return false;
+
+	return container[col][row][dep]==0;
+}
+
 void Well::RemoveFullPlane() {
 	//go through all rows and look for full planes
 	for (unsigned int r = 0; r < row; r++) {
