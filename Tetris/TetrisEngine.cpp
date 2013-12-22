@@ -60,10 +60,10 @@ void TetrisEngine::Run() {
 	int incCol = 0;
 	if (inputManager->IsDownPressed()) {
 		isKeyPressed = true;
-		incDep = -1;
+		incDep = 1;
 	} else if (inputManager->IsUpPressed()) {
 		isKeyPressed = true;
-		incDep = 1;
+		incDep = -1;
 	} else if (inputManager->IsLeftPressed()) {
 		isKeyPressed = true;
 		incCol = -1;
